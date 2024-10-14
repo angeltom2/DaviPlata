@@ -1,11 +1,12 @@
 <?php
 
-class Home{
+class Home extends Controller { 
 
-    public function index(){
+    public function index() {
         
-        echo "Funciona El metodo";
+        $this->views->getView($this, "index");
     }
+
 }
 
 ?>

@@ -24,7 +24,8 @@
             $parametro = trim($parametro,",");
         }
     }
-    
+
+    require_once "Config/App/autoload.php";
     $dircontrollers = "Controllers/" .$controller.".php";
     if (file_exists($dircontrollers)) {
         require_once $dircontrollers    ;
