@@ -24,6 +24,15 @@ class Query extends conexion {
 
         return $data;
     }
+    public function selectALL(string $sql) {  
+        $this->sql = $sql;
+
+        $result = $this->con->prepare($this->sql); 
+        $result->execute();  
+        $data = $result->fetchALL(PDO::FETCH_ASSOC);  
+
+        return $data;
+    }
 
 }
 

@@ -10,6 +10,13 @@ class Usuarios extends Controller {
         $this->model = $this->UsuariosModel;  
     }
 
+    public function listar(){
+
+        $data = ($this->model->getUsuarios());
+        echo json_encode($data,JSON_UNESCAPED_UNICODE);
+        die();
+    }
+
     public function index() {
         
         $this->views->getView($this, "index");
