@@ -12,6 +12,7 @@
             <th scope="col">Usuario</th>
             <th scope="col">Nombre</th>
             <th scope="col">Caja</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -20,7 +21,5 @@
 </table>
 
 </div>
-
-
 
 <?php include "views/Templates/footer.php"; ?>

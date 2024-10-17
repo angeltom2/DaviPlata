@@ -4,26 +4,30 @@ document.addEventListener("DOMContentLoaded", function() {
     tblUsuarios = $('#tblUsuarios').DataTable({ 
         ajax: {
             url: base_url + "usuarios/listar",
-            dataSrc: ''
+            dataSrc: function(json) {
+                console.log("Datos recibidos del servidor:", json); // Verifica los datos recibidos
+                return json;
+            }
         },
         columns: [
-            {
-                'data': 'id',
-            },
-            {
-                'data': 'usuario'
-            },
-            {
-                'data': 'nombre'
-            },
-            {
-                'data': 'id_caja'
-            }
+            { 'data': 'id' },
+            { 'data': 'usuario' },
+            { 'data': 'nombre' },
+            { 'data': 'caja' },
+            { 'data': 'acciones' }
         ]
+    });
+
+    // Evento para recargar manualmente la tabla cuando se haga clic en el botón
+    $('#reloadTable').on('click', function() {
+        tblUsuarios.ajax.reload(null, false); // Recarga sin reiniciar la paginación
     });
 });
 
 
+
+
+// Función de login
 function frmlogin(e) {
     e.preventDefault();
 
@@ -61,7 +65,6 @@ function frmlogin(e) {
                         alert(res);
                     }
                 } else {
-                    
                     document.getElementById("alerta").classList.remove("d-none");
                     document.getElementById("alerta").innerHTML = "Error en la solicitud. Código: " + this.status;
                 }
