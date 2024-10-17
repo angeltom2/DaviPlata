@@ -4,22 +4,23 @@
   <li class="breadcrumb-item active" style="color: #343a40; font-weight: bold;">Usuarios</li>
 </ol>
 
-<div class="container my-5">
-<table class="table table-light table-striped table-bordered table-hover" id="tblUsuarios">
+<button class="btn btn-primary mb-2" type="button"> Nuevo </button>
+
+<table class="table table-light " id="tblUsuarios">
     <thead class="table-dark">
         <tr>
-            <th scope="col">Id</th>
-            <th scope="col">Usuario</th>
-            <th scope="col">Nombre</th>
-            <th scope="col">Caja</th>
+            <th>Id</th>
+            <th>Usuario</th>
+            <th>Nombre</th>
+            <th>Caja</th>
+            <th>estado</th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-        
     </tbody>
 </table>
 
-</div>
+
 
 <?php include "views/Templates/footer.php"; ?>

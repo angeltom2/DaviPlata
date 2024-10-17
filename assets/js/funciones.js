@@ -1,12 +1,12 @@
 let tblUsuarios;
-
 document.addEventListener("DOMContentLoaded", function() {
+    // Inicializa DataTable
     tblUsuarios = $('#tblUsuarios').DataTable({ 
         ajax: {
             url: base_url + "usuarios/listar",
             dataSrc: function(json) {
                 console.log("Datos recibidos del servidor:", json); // Verifica los datos recibidos
-                return json;
+                return json; // Retorna los datos sin modificar
             }
         },
         columns: [
@@ -14,6 +14,14 @@ document.addEventListener("DOMContentLoaded", function() {
             { 'data': 'usuario' },
             { 'data': 'nombre' },
             { 'data': 'caja' },
+            {
+                'data': 'estado',
+                'render': function(data) {
+                    const estado = data.includes("Activo") ? 'Activo' : 'Inactivo';
+                    const color = estado === 'Activo' ? '#28a745' : '#dc3545'; // Verde para Activo, Rojo para Inactivo
+                    return `<span style="color: white; background-color: ${color}; border-radius: 5px; padding: 5px 10px; font-weight: bold; display: inline-block; text-align: center;">${estado}</span>`; // Estilo atractivo y centrado
+                }
+            },
             { 'data': 'acciones' }
         ]
     });
@@ -23,6 +31,11 @@ document.addEventListener("DOMContentLoaded", function() {
         tblUsuarios.ajax.reload(null, false); // Recarga sin reiniciar la paginación
     });
 });
+
+
+
+
+
 
 
 
@@ -54,15 +67,22 @@ function frmlogin(e) {
         http.send(new FormData(frm));
 
         http.onreadystatechange = function() {
-            if (this.readyState == 4) { 
+            if (this.readyState == 4) {
+                console.log("Respuesta del servidor:", this.responseText); // Añade esto para ver la respuesta en consola
                 if (this.status == 200) {
-                    const res = JSON.parse(this.responseText);
-                    if (res == "ok") {
-                        window.location = base_url + "usuarios";
-                    } else {
+                    try {
+                        const res = JSON.parse(this.responseText); // Intenta parsear el JSON
+                        if (res == "ok") {
+                            window.location = base_url + "usuarios";
+                        } else {
+                            document.getElementById("alerta").classList.remove("d-none");
+                            document.getElementById("alerta").innerHTML = res;
+                            alert(res);
+                        }
+                    } catch (error) {
+                        console.error("Error al parsear el JSON:", error);
                         document.getElementById("alerta").classList.remove("d-none");
-                        document.getElementById("alerta").innerHTML = res;
-                        alert(res);
+                        document.getElementById("alerta").innerHTML = "Error en la respuesta del servidor. No es un JSON válido.";
                     }
                 } else {
                     document.getElementById("alerta").classList.remove("d-none");
@@ -70,5 +90,7 @@ function frmlogin(e) {
                 }
             }
         }
+        
+        
     }
 }

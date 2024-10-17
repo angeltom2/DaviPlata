@@ -16,21 +16,26 @@
 </div>
 
 
-<script src="<?php echo base_url; ?>assets/js/jquery-3.7.1.js" crossorigin="anonymous"></script>
+    <!-- Carga de jQuery -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" crossorigin="anonymous"></script>
 
-<script src="<?php echo base_url; ?>assets/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-<script src="<?php echo base_url; ?>assets/js/datatables.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.1/js/dataTables.bootstrap5.min.js"></script>
+<!-- Carga de Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 
-<script src="<?php echo base_url; ?>assets/js/funciones.js"></script>
+<!-- Carga de DataTables desde la CDN más actualizada -->
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
 
-
-
+<!-- Definición de la variable base_url -->
 <script>
     const base_url = "<?php echo base_url; ?>";
 </script>
 
+<!-- Carga de tus funciones personalizadas -->
 <script src="<?php echo base_url; ?>assets/js/funciones.js"></script>
+
+
 
 </body>
 </html>
+

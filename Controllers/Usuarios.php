@@ -10,17 +10,37 @@ class Usuarios extends Controller {
         $this->model = $this->UsuariosModel;  
     }
 
-    public function listar(){
-        $data = $this->model->getUsuarios();
-        for ($i=0; $i < count($data) ; $i++) { 
+    public function listar() {
+        $data = $this->model->getUsuarios(); 
+        
+        error_log(print_r($data, true)); 
+        
+        for ($i = 0; $i < count($data); $i++) {
+            if (isset($data[$i]['estado'])) {
+                if ($data[$i]['estado'] == 1) {
+                    $data[$i]['estado'] = '<span class="badge badge-success">Activo</span>';
+                } else {
+                    $data[$i]['estado'] = '<span class="badge badge-danger">Inactivo</span>';
+                }
+            } else {
+                $data[$i]['estado'] = '<span class="badge badge-warning">No disponible</span>';
+            }
+    
             $data[$i]['acciones'] = '<div> 
-            <button class="btn btn-primary" type="button"> editar </button>
-            <button class="btn btn-danger" type="button"> Eliminar </button>
-            </div>';
+                <button class="btn btn-primary" type="button">Editar</button>
+                <button class="btn btn-danger" type="button">Eliminar</button>
+                </div>';
         }
+        
         echo json_encode($data, JSON_UNESCAPED_UNICODE);
         die();
     }
+    
+    
+    
+    
+    
+    
     
 
     public function index() {
