@@ -18,6 +18,12 @@ class UsuariosModel extends Query {
         return $data;
     }
 
+    public function getCajas() {
+        $sql = "SELECT * FROM caja WHERE estado = 1";
+        $data = $this->selectAll($sql);
+        return $data;
+    }
+
 }
 
 ?>

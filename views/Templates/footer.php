@@ -35,7 +35,6 @@
 <script src="<?php echo base_url; ?>assets/js/funciones.js"></script>
 
 
-
 </body>
 </html>
 

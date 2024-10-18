@@ -32,15 +32,12 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 });
 
+// Define la función frmUsuario en el ámbito global
+function frmUsuario() {
+    console.log("La función frmUsuario fue cargada correctamente");
+    $("#nuevo_usuario").modal("show");
+}
 
-
-
-
-
-
-
-
-// Función de login
 function frmlogin(e) {
     e.preventDefault();
 
@@ -94,3 +91,12 @@ function frmlogin(e) {
         
     }
 }
+
+document.addEventListener("DOMContentLoaded", function() {
+    document.getElementById("cancelar-btn").addEventListener("click", function() {
+      $("#nuevo_usuario").modal("hide");
+    });
+  });
+  
+
+

@@ -2,7 +2,7 @@
 
 class Views {
 
-    public function getView($controlador, $vista) {
+    public function getView($controlador, $vista , $data="") {
         $controlador = strtolower(get_class($controlador)); 
 
         if ($controlador == "home") {

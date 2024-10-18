@@ -7,8 +7,13 @@ class Usuarios extends Controller {
     public function __construct() {
         session_start();
         parent::__construct(); 
-        $this->model = $this->UsuariosModel;  
+        $this->model = new UsuariosModel();  // Inicializa el modelo correctamente
     }
+
+    public function index() {
+        $data['cajas'] = $this->model->getCajas();
+        $this->views->getView($this, "index", $data);
+      }
 
     public function listar() {
         $data = $this->model->getUsuarios(); 
@@ -36,18 +41,6 @@ class Usuarios extends Controller {
         die();
     }
     
-    
-    
-    
-    
-    
-    
-
-    public function index() {
-        
-        $this->views->getView($this, "index");
-    }
-
     public function validar() {
         header('Content-Type: application/json'); 
 
@@ -70,6 +63,7 @@ class Usuarios extends Controller {
         echo json_encode($msg, JSON_UNESCAPED_UNICODE); 
         die(); 
     }
+
 }
 
 ?>
