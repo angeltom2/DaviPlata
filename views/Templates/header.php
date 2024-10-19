@@ -9,17 +9,11 @@
         <title>Panel de Administrator</title>
         <!-- Carga de Bootstrap CSS -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
-
-        <!-- Carga de DataTables CSS -->
         <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
         <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
-
-
         <link href="<?php echo base_url; ?>assets/css/style.min.css" rel="stylesheet" />
         <link href="<?php echo base_url; ?>assets/css/styles.css" rel="stylesheet" />
 
-
-        <script src="<?php echo base_url; ?>assets/js/all.min.js" crossorigin="anonymous"></script>
     </head>
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">

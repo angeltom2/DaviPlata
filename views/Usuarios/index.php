@@ -6,6 +6,7 @@
 
 <button class="btn btn-primary mb-2" type="button" onclick="frmUsuario();"> Nuevo </button>
 
+
 <table class="table table-light" id="tblUsuarios">
     <thead class="table-dark">
         <tr>
@@ -64,8 +65,11 @@
           </div>
           
           <div class="form-group d-flex justify-content-between" style="margin-top: 20px;">
+            
             <button class="btn btn-danger" type="button" data-dismiss="modal" id="cancelar-btn">Cancelar</button>
-            <button class="btn btn-primary" type="submit">Registrar</button>
+
+            <button class="btn btn-primary" type="button" onclick="registrarUser(event);"> Registrar </button>
+            
           </div>
         </form>
       </div>

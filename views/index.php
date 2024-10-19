@@ -7,8 +7,11 @@
     <meta name="description" content="" />
     <meta name="author" content="" />
     <title>INICIAR SESION</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+    <link href="<?php echo base_url; ?>assets/css/style.min.css" rel="stylesheet" />
     <link href="<?php echo base_url; ?>assets/css/styles.css" rel="stylesheet" />
-    <script src="<?php echo base_url; ?>assets/js/all.min.js" crossorigin="anonymous"></script>
 </head>
 <body class="bg-primary">
     <div id="layoutAuthentication">
@@ -60,14 +63,27 @@
             </footer>
         </div>
     </div>
-
-    <script src="<?php echo base_url; ?>assets/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>>
     <script src="<?php echo base_url; ?>assets/js/scripts.js"></script>
 
     <script>
         const base_url = "<?php echo base_url; ?>";
     </script>
 
-    <script src="<?php echo base_url; ?>assets/js/funciones.js"></script>
+    <script type="module">
+        import { frmlogin } from '<?php echo base_url; ?>assets/js/funciones.js';
+
+        document.addEventListener("DOMContentLoaded", function() {
+        const frm = document.getElementById("frmLogin");
+        frm.addEventListener("submit", function(e) {
+            frmlogin(e); // Llama a la función aquí
+        });
+    });
+    </script>
+
+    <script src="<?php echo base_url; ?>assets/js/all.min.js" crossorigin="anonymous"></script>
 </body>
 </html>
