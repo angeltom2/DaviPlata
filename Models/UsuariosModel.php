@@ -2,6 +2,8 @@
 
 class UsuariosModel extends Query {
 
+    private $usuario , $nombre , $clave, $id_caja; 
+
     public function __construct() {
         parent::__construct();
     }
@@ -22,6 +24,26 @@ class UsuariosModel extends Query {
         $sql = "SELECT * FROM caja WHERE estado = 1";
         $data = $this->selectAll($sql);
         return $data;
+    }
+
+    public function registrarusuario( string $usuario , string $nombre , string $clave , int $id_caja){
+
+        $this->usuario = $usuario;
+        $this->nombre = $nombre;
+        $this->clave = $clave;
+        $this->id_caja = $id_caja;
+
+        $sql = "INSERT INTO usuarios(usuario,nombre,clave,id_caja) VALUES (?,?,?,?)";
+        $datos = array($this->usuario,$this->nombre,$this->clave,$this->id_caja);
+        $data = $this->save($sql,$datos);
+        if ($data == 1) {
+            $res = "ok";
+        }else {
+            $res = "error";
+        }
+
+        return $res;
+
     }
 
 }

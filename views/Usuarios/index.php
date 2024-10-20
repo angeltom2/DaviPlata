@@ -22,14 +22,15 @@
     </tbody>
 </table>
 
-<div id="nuevo_usuario" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true">
+<div id="nuevo_usuario" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title">
   <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 600px;">
     <div class="modal-content" style="border-radius: 12px; box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);">
       <div class="modal-header bg-primary text-white" style="border-top-left-radius: 12px; border-top-right-radius: 12px;">
         <h5 class="modal-title" id="my-modal-title">Nuevo Usuario</h5>
       </div>
       <div class="modal-body" style="padding: 30px;">
-        <form method="post" id="frmUsuarios">
+        <form method="post" id="frmUsuario">
+
           <div class="form-group">
             <label for="usuario">Usuario</label>
             <input id="usuario" class="form-control" type="text" name="usuario" placeholder="Ingrese el usuario" required>
@@ -59,23 +60,22 @@
             <select id="caja" class="form-control" name="caja" required>
               <option value="">Seleccione una caja</option>
               <?php foreach ($data['cajas'] as $row) { ?>
-                <option value="<?php echo $row['id']; ?>"><?php echo $row['caja']; ?> </option>
+                <option value="<?php echo $row['id']; ?>"><?php echo $row['caja']; ?></option>
               <?php } ?> 
             </select>
           </div>
           
           <div class="form-group d-flex justify-content-between" style="margin-top: 20px;">
-            
             <button class="btn btn-danger" type="button" data-dismiss="modal" id="cancelar-btn">Cancelar</button>
-
+            <button class="btn btn-secondary" type="button" onclick="limpiarFormulario();"> Limpiar </button>
             <button class="btn btn-primary" type="button" onclick="registrarUser(event);"> Registrar </button>
-            
           </div>
         </form>
       </div>
     </div>
   </div>
 </div>
+
 
 
 

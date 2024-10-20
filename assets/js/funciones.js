@@ -92,80 +92,94 @@ export function frmlogin(e) {
     }
 }
 
+
 export function registrarUser(h) {
     h.preventDefault();
-    console.log("registrarUser llamado"); // Verifica que la función se llama
-    const usuario = document.getElementById("usuario");
-    const nombre = document.getElementById("nombre");
-    const clave = document.getElementById("clave");
-    const confirmar = document.getElementById("confirmar");
-    const caja = document.getElementById("caja");
+    console.log("registrarUser llamado");
 
-    // Depura los valores de los campos
-    console.log("Usuario:", usuario.value);
-    console.log("Nombre:", nombre.value);
-    console.log("Clave:", clave.value);
-    console.log("Confirmar:", confirmar.value);
-    console.log("Caja:", caja.value);
+    const frm = document.getElementById("frmUsuario");
 
-    if (usuario.value === "" || nombre.value === "" || clave.value === "" || confirmar.value === "" || caja.value === "") {
-        console.log("Al menos un campo está vacío, mostrando SweetAlert.");
+    if (!frm) {
+        console.error("Error: No se encontró el formulario con id 'frmUsuario'.");
+        return;
+    } else {
+        console.log("Formulario seleccionado:", frm);
+    }
+
+    const usuario = document.getElementById("usuario").value;
+    const nombre = document.getElementById("nombre").value;
+    const clave = document.getElementById("clave").value;
+    const confirmar = document.getElementById("confirmar").value;
+    const caja = document.getElementById("caja").value;
+
+    if (!usuario || !nombre || !clave || !confirmar || !caja) {
         Swal.fire({
-            position: "center", // Centra la alerta
+            position: "center",
             icon: "error",
             title: "Todos los campos son obligatorios",
             showConfirmButton: false,
-            timer: 1500,
-            toast: false // Asegúrate de que esto esté desactivado para centrar la alerta
+            timer: 2000,
         });
-
-        clave.classList.remove("is-invalid");
-        usuario.classList.add("is-invalid");
-        usuario.focus();
-    } else if (clave.value === "") {
-        usuario.classList.remove("is-invalid");
-        clave.classList.add("is-invalid");
-        clave.focus();
+    } else if (clave !== confirmar) {
+        Swal.fire({
+            position: "center",
+            icon: "error",
+            title: "Las contraseñas no coinciden",
+            showConfirmButton: false,
+            timer: 2000,
+        });
     } else {
-        const url = base_url + "Usuarios/validar";
-        const frm = document.getElementById("frmUsuarios");
+        const url = base_url + "Usuarios/registrar";
         const http = new XMLHttpRequest();
         http.open("POST", url, true);
         http.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-        http.send(new FormData(frm));
+
+        const formData = new FormData(frm);
+        http.send(formData);
 
         http.onreadystatechange = function() {
-            if (this.readyState == 4) {
-                console.log("Respuesta del servidor:", this.responseText); // Ver la respuesta en consola
-                if (this.status == 200) {
-                    try {
-                        const res = JSON.parse(this.responseText); // Intenta parsear el JSON
-                        if (res == "ok") {
-                            window.location = base_url + "usuarios";
-                        } else {
-                            document.getElementById("alerta").classList.remove("d-none");
-                            document.getElementById("alerta").innerHTML = res;
-                            alert(res);
-                        }
-                    } catch (error) {
-                        console.error("Error al parsear el JSON:", error);
-                        document.getElementById("alerta").classList.remove("d-none");
-                        document.getElementById("alerta").innerHTML = "Error en la respuesta del servidor. No es un JSON válido.";
-                    }
+            if (this.readyState == 4 && this.status == 200) {
+                const res = JSON.parse(this.responseText); // Analizar respuesta aquí
+                console.log("Respuesta del servidor:", res); // Verifica la respuesta
+
+                if (res.trim() == "ok") { // Asegúrate de que sea una comparación precisa
+                    Swal.fire({
+                        position: "center",
+                        icon: 'success',
+                        title: '¡ Usuario Registrado con Éxito!',
+                        showConfirmButton: false,
+                        timer: 2000,
+                    });
                 } else {
-                    document.getElementById("alerta").classList.remove("d-none");
-                    document.getElementById("alerta").innerHTML = "Error en la solicitud. Código: " + this.status;
+                    Swal.fire({
+                        position: "center",
+                        icon: "error",
+                        title: res,
+                        showConfirmButton: false,
+                        timer: 2000,
+                    });
                 }
             }
         }
     }
-};
+}
+
+
+
+
+export function limpiarFormulario() {
+    document.getElementById("frmUsuario").reset(); // Limpiar todos los campos del formulario
+}
+
 
 document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("cancelar-btn").addEventListener("click", function () {
         $("#nuevo_usuario").modal("hide");
     });
 });
+
+
+
 
 
 

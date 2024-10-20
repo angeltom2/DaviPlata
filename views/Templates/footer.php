@@ -39,6 +39,13 @@
     window.registrarUser = registrarUser; // Haz que la función sea global
 </script>
 
+<script type="module">
+    const base_url = "<?php echo base_url; ?>"; // Asegúrate de definir base_url aquí para que sea accesible
+
+    import { limpiarFormulario } from '<?php echo base_url; ?>assets/js/funciones.js';    
+    window.limpiarFormulario = limpiarFormulario; // Haz que la función sea global
+</script>
+
 
 <script src="<?php echo base_url; ?>assets/js/all.min.js" crossorigin="anonymous"></script>
 
