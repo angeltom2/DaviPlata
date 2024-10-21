@@ -75,14 +75,10 @@
     </script>
 
     <script type="module">
-        import { frmlogin } from '<?php echo base_url; ?>assets/js/funciones.js';
+    const base_url = "<?php echo base_url; ?>"; // Asegúrate de definir base_url aquí para que sea accesible
 
-        document.addEventListener("DOMContentLoaded", function() {
-        const frm = document.getElementById("frmLogin");
-        frm.addEventListener("submit", function(e) {
-            frmlogin(e); // Llama a la función aquí
-        });
-    });
+    import { frmlogin } from '<?php echo base_url; ?>assets/js/funciones.js';    
+    window.frmlogin = frmlogin; // Haz que la función sea global
     </script>
 
     <script src="<?php echo base_url; ?>assets/js/all.min.js" crossorigin="anonymous"></script>

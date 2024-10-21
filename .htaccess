@@ -1,6 +1,10 @@
-Options All -Indexes
-Options All -Indexes
-RewriteEngine on
+# Deshabilitar la visualización de índices de directorio
+Options -Indexes
+
+# Habilitar el motor de reescritura
+RewriteEngine On
+
+# Redirigir solicitudes que no sean de archivos o directorios existentes
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^(.*)$ index.php?url=$1 [QSA,L]

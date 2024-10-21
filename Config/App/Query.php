@@ -16,40 +16,54 @@ class Query extends conexion {
         }
     }
 
-    public function select(string $sql) {  
+    public function select(string $sql, array $datos = []) {  
         $this->sql = $sql;
 
         $result = $this->con->prepare($this->sql); 
-        $result->execute();  
-        $data = $result->fetch(PDO::FETCH_ASSOC);  
-
-        return $data;
-    }
-    public function selectALL(string $sql) {  
-        $this->sql = $sql;
-
-        $result = $this->con->prepare($this->sql); 
-        $result->execute();  
-        $data = $result->fetchALL(PDO::FETCH_ASSOC);  
-
-        return $data;
-    }
-
-    public function save(string $sql , array $datos){
-
-        $this->sql=$sql;
-        $this->datos=$datos;
-        $insert = $this->con->prepare($this->sql);
-        $data = $insert->execute($this->datos);
-        if ($data) {
-            $res = 1;
-        }else {
-            $res = 0;
+        
+        // Ejecutar la consulta con parámetros si se proporcionan
+        if (!empty($datos)) {
+            $result->execute($datos);  
+        } else {
+            $result->execute();  
         }
-        return $res;
-
+        
+        // Obtener solo un registro
+        $data = $result->fetch(PDO::FETCH_ASSOC);  
+        
+        return $data;
     }
 
+    public function selectALL(string $sql, array $datos = []) {  
+        $this->sql = $sql;
+
+        $result = $this->con->prepare($this->sql); 
+        
+        // Ejecutar la consulta con parámetros si se proporcionan
+        if (!empty($datos)) {
+            $result->execute($datos);  
+        } else {
+            $result->execute();  
+        }
+        
+        // Obtener todos los registros
+        $data = $result->fetchAll(PDO::FETCH_ASSOC);  
+        
+        return $data;
+    }
+
+    public function save(string $sql, array $datos) {
+        $this->sql = $sql;
+        $this->datos = $datos;
+        
+        $insert = $this->con->prepare($this->sql);
+        
+        // Ejecutar la consulta de inserción con parámetros
+        $data = $insert->execute($this->datos);
+        
+        return $data ? 1 : 0; // Retornar 1 si fue exitoso, 0 si falló
+    }
 }
+
 
 ?>

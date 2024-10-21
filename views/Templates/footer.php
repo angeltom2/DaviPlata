@@ -24,12 +24,18 @@
     const base_url = "<?php echo base_url; ?>";
 </script>
 
-
 <script type="module">
     const base_url = "<?php echo base_url; ?>"; // Asegúrate de definir base_url aquí para que sea accesible
 
     import { frmUsuario } from '<?php echo base_url; ?>assets/js/funciones.js';    
     window.frmUsuario = frmUsuario; // Haz que la función sea global
+</script>
+
+<script type="module">
+    const base_url = "<?php echo base_url; ?>"; // Asegúrate de definir base_url aquí para que sea accesible
+
+    import { btnEditarUser } from '<?php echo base_url; ?>assets/js/funciones.js';    
+    window.btnEditarUser = btnEditarUser; // Haz que la función sea global
 </script>
 
 <script type="module">
@@ -46,6 +52,19 @@
     window.limpiarFormulario = limpiarFormulario; // Haz que la función sea global
 </script>
 
+<script type="module">
+    const base_url = "<?php echo base_url; ?>"; // Asegúrate de definir base_url aquí para que sea accesible
+
+    import { btneliminarUser } from '<?php echo base_url; ?>assets/js/funciones.js';    
+    window.btneliminarUser = btneliminarUser; // Haz que la función sea global
+</script>
+
+<script type="module">
+    const base_url = "<?php echo base_url; ?>"; // Asegúrate de definir base_url aquí para que sea accesible
+
+    import { btnreingresarUser } from '<?php echo base_url; ?>assets/js/funciones.js';    
+    window.btnreingresarUser = btnreingresarUser; // Haz que la función sea global
+</script>
 
 <script src="<?php echo base_url; ?>assets/js/all.min.js" crossorigin="anonymous"></script>
 

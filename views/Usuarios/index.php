@@ -4,7 +4,7 @@
   <li class="breadcrumb-item active" style="color: #343a40; font-weight: bold;">Usuarios</li>
 </ol>
 
-<button class="btn btn-primary mb-2" type="button" onclick="frmUsuario();"> Nuevo </button>
+<button class="btn btn-primary mb-2" type="button" onclick="frmUsuario();"><i class="fas fa-plus"></i> </button>
 
 
 <table class="table table-light" id="tblUsuarios">
@@ -26,13 +26,14 @@
   <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 600px;">
     <div class="modal-content" style="border-radius: 12px; box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);">
       <div class="modal-header bg-primary text-white" style="border-top-left-radius: 12px; border-top-right-radius: 12px;">
-        <h5 class="modal-title" id="my-modal-title">Nuevo Usuario</h5>
+        <h5 class="modal-title" id = "title">Nuevo Usuario</h5>
       </div>
       <div class="modal-body" style="padding: 30px;">
         <form method="post" id="frmUsuario">
 
           <div class="form-group">
             <label for="usuario">Usuario</label>
+            <input type = "hidden" id="id" name = "id">
             <input id="usuario" class="form-control" type="text" name="usuario" placeholder="Ingrese el usuario" required>
           </div>
           <div class="form-group">
@@ -40,7 +41,7 @@
             <input id="nombre" class="form-control" type="text" name="nombre" placeholder="Ingrese el nombre completo" required>
           </div>
 
-          <div class="row">
+          <div class="row" id = "claves">
             <div class="col-md-6">
               <div class="form-group">
                 <label for="clave">Contraseña</label>
@@ -68,7 +69,7 @@
           <div class="form-group d-flex justify-content-between" style="margin-top: 20px;">
             <button class="btn btn-danger" type="button" data-dismiss="modal" id="cancelar-btn">Cancelar</button>
             <button class="btn btn-secondary" type="button" onclick="limpiarFormulario();"> Limpiar </button>
-            <button class="btn btn-primary" type="button" onclick="registrarUser(event);"> Registrar </button>
+            <button class="btn btn-primary" type="button" onclick="registrarUser(event);" id = "btnAccion"> Registrar </button>
           </div>
         </form>
       </div>
