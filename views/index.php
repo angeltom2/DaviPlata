@@ -28,15 +28,23 @@
                                 <div class="card-body">
                                     <form id="frmLogin">
                                         <div class="form-floating mb-3">
-                                            <input class="form-control" id="usuario" name="usuario" type="text" placeholder="Ingrese Usuario" />
-                                            <label for="usuario"><i class="fas fa-user"></i> Usuario</label>
+                                            <select class="form-control" id="tipo_usuario" name="tipo_usuario" required>
+                                                <option value="">Selecciona tipo de usuario</option>
+                                                <option value="admin">Administrador</option>
+                                                <option value="cliente">Cliente</option>
+                                            </select>
+                                            <label for="tipo_usuario">Tipo de usuario</label>
                                         </div>
                                         <div class="form-floating mb-3">
-                                            <input class="form-control" id="clave" name="clave" type="password" placeholder="Ingrese Contraseña" />
+                                            <input class="form-control" id="usuario_dni" name="usuario_dni" type="text" placeholder="Ingrese Usuario/DNI" required />
+                                            <label for="usuario_dni"><i class="fas fa-user"></i> Usuario/DNI</label>
+                                        </div>
+                                        <div class="form-floating mb-3">
+                                            <input class="form-control" id="clave" name="clave" type="password" placeholder="Ingrese Contraseña" required />
                                             <label for="clave"><i class="fas fa-key"></i> Contraseña</label>
                                         </div>
 
-                                        <div class = "alert alert-danger text-center d-none" id="alerta" role="alert"></div>
+                                        <div class="alert alert-danger text-center d-none" id="alerta" role="alert"></div>
 
                                         <div class="form-check mb-3">
                                             <input class="form-check-input" id="inputRememberPassword" type="checkbox" value="" />
@@ -67,7 +75,7 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
     <script src="<?php echo base_url; ?>assets/js/scripts.js"></script>
 
     <script>
@@ -75,10 +83,10 @@
     </script>
 
     <script type="module">
-    const base_url = "<?php echo base_url; ?>"; // Asegúrate de definir base_url aquí para que sea accesible
+        const base_url = "<?php echo base_url; ?>"; // Asegúrate de definir base_url aquí para que sea accesible
 
-    import { frmlogin } from '<?php echo base_url; ?>assets/js/funciones.js';    
-    window.frmlogin = frmlogin; // Haz que la función sea global
+        import { frmlogin } from '<?php echo base_url; ?>assets/js/funciones.js';    
+         window.frmlogin = frmlogin; // Haz que la función sea global
     </script>
 
     <script src="<?php echo base_url; ?>assets/js/all.min.js" crossorigin="anonymous"></script>

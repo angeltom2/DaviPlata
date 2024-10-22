@@ -43,29 +43,45 @@ class Usuarios extends Controller {
     }
     
     public function validar() {
-       
-        if (empty($_POST['usuario']) || empty($_POST['clave'])) {
+        if (empty($_POST['usuario_dni']) || empty($_POST['clave']) || empty($_POST['tipo_usuario'])) {
             $msg = "Los campos están vacíos"; 
         } else {
-            $usuario = $_POST['usuario']; 
+            $usuario_dni = $_POST['usuario_dni']; 
             $clave = $_POST['clave'];
+            $tipo_usuario = $_POST['tipo_usuario'];
     
-            // Obtener el usuario de la base de datos
-            $data = $this->model->getUsuario($usuario);
+            // Obtener datos según el tipo de usuario
+            $data = ($tipo_usuario == "admin") ? $this->model->getUsuario($usuario_dni) : $this->model->getCliente($usuario_dni);
     
-            // Verificar si el usuario existe
+            // Depuración
+            error_log("Datos recibidos: DNI = $usuario_dni, Clave = $clave");
+            error_log("Datos obtenidos de la base de datos: " . print_r($data, true));
+    
+            // Verificación de datos
             if ($data) {
-                // Validar la contraseña ingresada con el hash almacenado
-                if (password_verify($clave, $data['clave'])) {
-                    $_SESSION['id_usuario'] = $data['id'];
-                    $_SESSION['usuario'] = $data['usuario']; 
-                    $_SESSION['nombre'] = $data['nombre']; 
-                    $msg = "ok";
-                } else {
-                    $msg = "Usuario o contraseña incorrecta";
+                if ($tipo_usuario == "admin") {
+                    // Verificar la contraseña encriptada para administradores
+                    if (password_verify($clave, $data['clave'])) {
+                        $_SESSION['id_usuario'] = $data['id'];
+                        $_SESSION['usuario'] = isset($data['usuario']) ? $data['usuario'] : ''; // Manejar undefined
+                        $_SESSION['nombre'] = isset($data['nombre']) ? $data['nombre'] : ''; // Manejar undefined
+                        $msg = "ok"; // Inicio de sesión exitoso
+                    } else {
+                        $msg = "La contraseña es incorrecta"; // Mensaje específico
+                    }
+                } else if ($tipo_usuario == "cliente") {
+                    // Comprobar si la contraseña de cliente es correcta (sin hash)
+                    if ($data['clave'] === $clave) {
+                        $_SESSION['id_usuario'] = $data['id'];
+                        $_SESSION['usuario'] = isset($data['usuario']) ? $data['usuario'] : ''; // Manejar undefined
+                        $_SESSION['nombre'] = isset($data['nombre']) ? $data['nombre'] : ''; // Manejar undefined
+                        $msg = "ok"; // Inicio de sesión exitoso
+                    } else {
+                        $msg = "La contraseña es incorrecta"; // Mensaje específico
+                    }
                 }
             } else {
-                $msg = "Usuario o contraseña incorrecta"; // Si no se encontró el usuario
+                $msg = "El DNI no está registrado"; // Mensaje específico
             }
         }
     
@@ -124,7 +140,6 @@ class Usuarios extends Controller {
         die();
     }
     
-
     public function editar( int $id){
         
         $data = $this->model->editarUser($id);
@@ -152,11 +167,7 @@ class Usuarios extends Controller {
         }
         echo json_encode($msg, JSON_UNESCAPED_UNICODE);
         die();
-    }
-
-    public function salir(){
-    }
-    
+    }    
 }
 
 ?>
