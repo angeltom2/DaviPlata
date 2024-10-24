@@ -115,7 +115,7 @@ export function frmlogin(e) {
                             if (tipoUsuario.value === "admin") {
                                 window.location = base_url + "usuarios"; // Redirigir a página de administradores
                             } else {
-                                window.location = base_url + "clientes"; // Redirigir a página de clientes
+                                window.location = base_url + "VistaClientes"; // Redirigir a página de clientes
                             }
                         } else {
                             document.getElementById("alerta").classList.remove("d-none");
