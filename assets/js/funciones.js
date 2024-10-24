@@ -1,36 +1,47 @@
 let tblUsuarios , tblClientes;
 document.addEventListener("DOMContentLoaded", function () {
     
-    tblUsuarios = $('#tblUsuarios').DataTable({
-        ajax: {
-            url: base_url + "usuarios/listar",
-            dataSrc: function (json) {
-                console.log("Datos recibidos del servidor:", json); // Verifica los datos recibidos
-                return json; // Retorna los datos sin modificar
-            }
-        },
-        columns: [
-            { 'data': 'id' },
-            { 'data': 'usuario' },
-            { 'data': 'nombre' },
-            { 'data': 'caja' },
-            {
-                'data': 'estado',
-                'render': function (data) {
-                    const estado = data.includes("Activo") ? 'Activo' : 'Inactivo';
-                    const color = estado === 'Activo' ? '#28a745' : '#dc3545'; // Verde para Activo, Rojo para Inactivo
-                    return `<span style="color: white; background-color: ${color}; border-radius: 5px; padding: 5px 10px; font-weight: bold; display: inline-block; text-align: center;">${estado}</span>`; // Estilo atractivo y centrado
+    $(document).ready(function() {
+        tblUsuarios = $('#tblUsuarios').DataTable({
+            "lengthChange": false,  // Desactiva "Show entries"
+            "paging": true,         // Habilita la paginación
+            "searching": true,      // Habilita la búsqueda
+            "info": true,           // Muestra la información (total de registros)
+            "ajax": {
+                "url": base_url + "usuarios/listar",
+                "dataSrc": function (json) {
+                    console.log("Datos recibidos del servidor:", json); // Verifica los datos recibidos
+                    return json; // Retorna los datos sin modificar
                 }
             },
-            { 'data': 'acciones' }
-        ]
+            "columns": [
+                { 'data': 'id' },
+                { 'data': 'usuario' },
+                { 'data': 'nombre' },
+                { 'data': 'caja' },
+                {
+                    'data': 'estado',
+                    'render': function (data) {
+                        const estado = data.includes("Activo") ? 'Activo' : 'Inactivo';
+                        const color = estado === 'Activo' ? '#28a745' : '#dc3545'; // Verde para Activo, Rojo para Inactivo
+                        return `<span style="color: white; background-color: ${color}; border-radius: 5px; padding: 5px 10px; font-weight: bold; display: inline-block; text-align: center;">${estado}</span>`;
+                    }
+                },
+                { 'data': 'acciones' }
+            ]
+        });
     });
+    
 
     // Evento para recargar manualmente la tabla cuando se haga clic en el botón
     $('#reloadTable').on('click', function () {
         tblUsuarios.ajax.reload(null, false); // Recarga sin reiniciar la paginación
     });
     tblClientes = $('#tblClientes').DataTable({
+        "lengthChange": false,  // Desactiva "Show entries"
+        "paging": true,         // Habilita la paginación
+        "searching": true,      // Habilita la búsqueda
+        "info": true,  
         ajax: {
             url: base_url + "clientes/listar",
             dataSrc: function (json) {

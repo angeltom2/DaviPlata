@@ -1,33 +1,71 @@
 <?php include "views/Templates/header.php"; ?>
 
-<ol class="breadcrumb mb-4" style="background-color: #e9ecef; border-radius: 0.5rem; padding: 15px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);">
-  <li class="breadcrumb-item active" style="color: #343a40; font-weight: bold;">Usuarios</li>
-</ol>
-
-<button class="btn btn-primary mb-2" type="button" onclick="frmUsuario();"><i class="fas fa-plus"></i> </button>
+<div style="margin-bottom: 20px; text-align: center;">
+    <h1 style="font-size: 2.5rem; font-weight: bold; color: black; text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.7);">Usuarios</h1>
+</div>
 
 
-<table class="table table-light" id="tblUsuarios">
-    <thead class="table-dark">
+<button class="btn" style="background: #800000; color: white; font-weight: bold; border: none; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); margin-bottom: 10px;" type="button" onclick="frmUsuario();">
+    <i class="fas fa-plus"></i> Agregar Usuario
+</button>
+
+<style>
+    /* Estilos personalizados para la tabla */
+    .table {
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Encabezados de la tabla */
+    .table th {
+        background-color: #800000; /* Rojo oscuro */
+        color: white; /* Texto blanco */
+        font-weight: bold;
+        padding: 15px; /* Añadir padding para mejorar el espaciado */
+    }
+
+    .table td {
+        padding: 15px;
+        text-align: center; /* Centrar texto en las celdas */
+    }
+
+    .table tbody tr:nth-child(even) {
+        background-color: #f8f9fa; /* Color de fondo para filas impares */
+    }
+
+    .table tbody tr:hover {
+        background-color: #e9ecef; /* Color al pasar el mouse */
+    }
+
+    .table button {
+        margin: 0 5px; /* Espaciado entre botones */
+    }
+</style>
+
+<table class="table table-light" id="tblUsuarios" style="border-radius: 10px; overflow: hidden; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); margin-top: 10px;">
+    <thead>
         <tr>
             <th>Id</th>
             <th>Usuario</th>
             <th>Nombre</th>
             <th>Caja</th>
-            <th>estado</th>
-            <th></th>
+            <th>Estado</th>
+            <th style="text-align: center;"></th>
         </tr>
     </thead>
     <tbody>
     </tbody>
 </table>
 
+
 <div id="nuevo_usuario" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title">
   <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 600px;">
     <div class="modal-content" style="border-radius: 12px; box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);">
-      <div class="modal-header bg-primary text-white" style="border-top-left-radius: 12px; border-top-right-radius: 12px;">
-        <h5 class="modal-title" id = "title">Nuevo Usuario</h5>
-      </div>
+    <div class="modal-header" style="background: linear-gradient(to right, #ffffff, #ffcccc); border-top-left-radius: 12px; border-top-right-radius: 12px;">
+    <h5 class="modal-title font-weight-bold" id="title" style="color: black;">Nuevo Usuario</h5>
+    </div>
+
       <div class="modal-body" style="padding: 30px;">
         <form method="post" id="frmUsuario">
 

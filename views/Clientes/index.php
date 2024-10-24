@@ -1,19 +1,56 @@
 <?php include "views/Templates/header.php"; ?>
 
-<ol class="breadcrumb mb-4" style="background-color: #e9ecef; border-radius: 0.5rem; padding: 15px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);">
-  <li class="breadcrumb-item active" style="color: #343a40; font-weight: bold;">Clientes</li>
-</ol>
+<div style="text-align: center; margin-bottom: 22px;">
+    <span style="font-weight: bold; font-size: 2.5rem; color: black;">Clientes</span>
+</div>
 
-<button class="btn btn-primary mb-2" type="button" onclick="frmCliente();"><i class="fas fa-plus"></i> </button>
 
-<table class="table table-light" id="tblClientes">
-    <thead class="table-dark">
+<button class="btn" style="background: #800000; color: white; font-weight: bold; border: none; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); margin-bottom: 10px;" type="button" onclick="frmCliente();">
+    <i class="fas fa-plus"></i> Agregar Cliente
+</button>
+
+<style>
+    /* Estilos personalizados para la tabla */
+    .table {
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Encabezados de la tabla */
+    .table th {
+        background-color: #800000; /* Rojo oscuro */
+        color: white; /* Texto blanco */
+        font-weight: bold;
+        padding: 15px; /* Añadir padding para mejorar el espaciado */
+    }
+
+    .table td {
+        padding: 15px;
+        text-align: center; /* Centrar texto en las celdas */
+    }
+
+    .table tbody tr:nth-child(even) {
+        background-color: #f8f9fa; /* Color de fondo para filas pares */
+    }
+
+    .table tbody tr:hover {
+        background-color: #e9ecef; /* Color al pasar el mouse */
+    }
+
+    .table button {
+        margin: 0 5px; /* Espaciado entre botones */
+    }
+</style>
+
+<table class="table table-light" id="tblClientes" style="margin-top: 10px;">
+    <thead>
         <tr>
             <th>Id</th>
             <th>DNI</th>
             <th>Nombre</th>
             <th>Telefono</th>
-            <th>direccion</th>
+            <th>Dirección</th>
             <th>Estado</th>
             <th></th>
         </tr>
@@ -21,6 +58,7 @@
     <tbody>
     </tbody>
 </table>
+
 
 <div id="nuevo_cliente" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title">
   <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 600px;">
