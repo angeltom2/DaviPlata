@@ -103,10 +103,7 @@ class Usuarios extends Controller {
         if (empty($usuario) || empty($nombre) || empty($caja)) {
             echo json_encode("Todos los campos son obligatorios", JSON_UNESCAPED_UNICODE);
             die();
-        }
-    
-        // Solo se verifica la contraseña si es un nuevo registro
-        if ($id == "") { // Nuevo registro
+        }if ($id == "") { 
             if (empty($clave) || empty($confirmar)) {
                 echo json_encode("La contraseña es obligatoria", JSON_UNESCAPED_UNICODE);
                 die();
@@ -168,6 +165,40 @@ class Usuarios extends Controller {
         echo json_encode($msg, JSON_UNESCAPED_UNICODE);
         die();
     }    
+
+    public function cambiarPass() {
+        $actual = $_POST['clave_actual'];
+        $nueva = $_POST['clave_nueva'];
+        $confirmar = $_POST['confirmar_clave'];
+    
+        // Verifica si los campos están vacíos
+        if (empty($actual) || empty($nueva) || empty($confirmar)) {
+            echo json_encode("Todos los campos son obligatorios", JSON_UNESCAPED_UNICODE);
+            die();
+        } else if (empty($nueva) || empty($confirmar)) {
+            echo json_encode("La nueva contraseña es obligatoria", JSON_UNESCAPED_UNICODE);
+            die();
+        } else if ($nueva != $confirmar) {
+            echo json_encode("Las contraseñas no coinciden", JSON_UNESCAPED_UNICODE);
+            die();
+        }
+    
+        $id = $_SESSION['id_usuario'];
+        $data = $this->model->editarUser($id);
+    
+        // Verificar la contraseña actual
+        if (password_verify($actual, $data['clave'])) {
+            $verificar = $this->model->modificarPass(password_hash($nueva, PASSWORD_DEFAULT), $id);
+            if ($verificar == 1) {
+                echo json_encode("ok", JSON_UNESCAPED_UNICODE); // Devuelve "ok" en caso de éxito
+            } else {
+                echo json_encode("Error al modificar la contraseña", JSON_UNESCAPED_UNICODE);
+            }
+        } else {
+            echo json_encode("La contraseña actual es incorrecta", JSON_UNESCAPED_UNICODE);
+        }
+    }
+    
 }
 
 ?>

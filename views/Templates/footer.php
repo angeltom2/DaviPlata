@@ -11,10 +11,49 @@
 </div>
 </div>
 
+<div id="cambiarPass" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header" style="background: #800000; color: white;">
+        <h5 class="modal-title">Modificar Contraseña</h5>
+      </div>
+      <div class="modal-body">
+        <form id="frmCambiarPass">
+          <div class="form-group">
+            <label for="clave_actual">Contraseña Actual</label>
+            <input id="clave_actual" class="form-control" type="password" name="clave_actual" placeholder="Contraseña Actual" required>
+          </div>
+          <div class="form-group">
+            <label for="clave_nueva">Contraseña Nueva</label>
+            <input id="clave_nueva" class="form-control" type="password" name="clave_nueva" placeholder="Nueva contraseña" required>
+          </div>
+          <div class="form-group">
+            <label for="confirmar_clave">Confirmar Contraseña</label>
+            <input id="confirmar_clave" class="form-control" type="password" name="confirmar_clave" placeholder="Confirmar contraseña" required>
+          </div>
+
+          <div class="form-group text-right" style="margin-top: 20px;">
+          <button class="btn btn-primary" type="button" onclick="frmCambiarPass(event);" id="btnAcciones"> modificar </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 <script src="https://code.jquery.com/jquery-3.7.1.min.js" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+
+<script>
+    $(document).ready(function(){
+        $('.dropdown-item').click(function(){
+         $('#cambiarPass').modal('show');
+        });
+    });
+</script>
 
 <script>
     const base_url = "<?php echo base_url; ?>";
@@ -104,12 +143,16 @@
     window.btnreingresarCliente = btnreingresarCliente; // Haz que la función sea global
 </script>
 
+<script type="module">  
+    const base_url = "<?php echo base_url; ?>"; // Asegúrate de definir base_url aquí para que sea accesible
+    import { frmCambiarPass } from '<?php echo base_url; ?>assets/js/funciones.js';    
+    window.frmCambiarPass = frmCambiarPass; // Haz que la función sea global
+</script>
+
+
 <script src="<?php echo base_url; ?>assets/js/all.min.js" crossorigin="anonymous"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.3/dist/sweetalert2.all.min.js"></script>
-
-
-
     
 </body>
 </html>

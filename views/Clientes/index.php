@@ -63,16 +63,15 @@
 <div id="nuevo_cliente" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title">
   <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 600px;">
     <div class="modal-content" style="border-radius: 12px; box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);">
-      <div class="modal-header bg-primary text-white" style="border-top-left-radius: 12px; border-top-right-radius: 12px;">
-        <h5 class="modal-title" id="title">Nuevo Cliente</h5>
+      <div class="modal-header" style="background: #800000; border-top-left-radius: 12px; border-top-right-radius: 12px;">
+        <h5 class="modal-title font-weight-bold" id="title" style="color: white;">Nuevo Cliente</h5>
       </div>
       <div class="modal-body" style="padding: 30px;">
         <form method="post" id="frmCliente">
-
           <div class="form-group">
-            <label for="dni">dni</label>
+            <label for="dni">DNI</label>
             <input type="hidden" id="id" name="id">
-            <input id="dni" class="form-control" type="text" name="dni" placeholder="Ingrese el dni" required>
+            <input id="dni" class="form-control" type="text" name="dni" placeholder="Ingrese el DNI" required>
           </div>
 
           <div class="form-group">
@@ -110,7 +109,6 @@
             <button class="btn btn-secondary" type="button" onclick="limpiarFormularioCliente();">Limpiar</button>
             <button class="btn btn-primary" type="button" onclick="registrarcliente(event);" id="btnAccion">Registrar</button>
           </div>
-
         </form>
       </div>
     </div>

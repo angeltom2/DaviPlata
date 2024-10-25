@@ -43,6 +43,8 @@
     }
 </style>
 
+
+
 <table class="table table-light" id="tblUsuarios" style="border-radius: 10px; overflow: hidden; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); margin-top: 10px;">
     <thead>
         <tr>
@@ -62,16 +64,15 @@
 <div id="nuevo_usuario" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title">
   <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 600px;">
     <div class="modal-content" style="border-radius: 12px; box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);">
-    <div class="modal-header" style="background: linear-gradient(to right, #ffffff, #ffcccc); border-top-left-radius: 12px; border-top-right-radius: 12px;">
-    <h5 class="modal-title font-weight-bold" id="title" style="color: black;">Nuevo Usuario</h5>
-    </div>
+      <div class="modal-header" style="background: #800000; border-top-left-radius: 12px; border-top-right-radius: 12px;">
+        <h5 class="modal-title font-weight-bold" id="title" style="color: white;">Nuevo Usuario</h5>
+      </div>
 
       <div class="modal-body" style="padding: 30px;">
         <form method="post" id="frmUsuario">
-
           <div class="form-group">
             <label for="usuario">Usuario</label>
-            <input type = "hidden" id="id" name = "id">
+            <input type="hidden" id="id" name="id">
             <input id="usuario" class="form-control" type="text" name="usuario" placeholder="Ingrese el usuario" required>
           </div>
           <div class="form-group">
@@ -79,7 +80,7 @@
             <input id="nombre" class="form-control" type="text" name="nombre" placeholder="Ingrese el nombre completo" required>
           </div>
 
-          <div class="row" id = "claves">
+          <div class="row" id="claves">
             <div class="col-md-6">
               <div class="form-group">
                 <label for="clave">Contraseña</label>
@@ -103,20 +104,17 @@
               <?php } ?> 
             </select>
           </div>
-          
+
           <div class="form-group d-flex justify-content-between" style="margin-top: 20px;">
             <button class="btn btn-danger" type="button" data-dismiss="modal" id="cancelar-btn">Cancelar</button>
             <button class="btn btn-secondary" type="button" onclick="limpiarFormulario();"> Limpiar </button>
-            <button class="btn btn-primary" type="button" onclick="registrarUser(event);" id = "btnAccion"> Registrar </button>
+            <button class="btn btn-primary" type="button" onclick="registrarUser(event);" id="btnAccion"> Registrar </button>
           </div>
         </form>
       </div>
     </div>
   </div>
 </div>
-
-
-
 
 <?php include "views/Templates/footer.php"; ?>
 

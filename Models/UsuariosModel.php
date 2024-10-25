@@ -99,12 +99,12 @@ class UsuariosModel extends Query {
     } 
 
     public function editarUser(int $id){
-        $sql = "SELECT * FROM usuarios WHERE id = $id";
-        $data = $this->select($sql);
-        return $data;
+            $sql = "SELECT * FROM usuarios WHERE id = $id";
+            $data = $this->select($sql);
+            return $data;
 
     }
-    
+
     public function accionUser(int $estado , int $id ) {
         $this->id = $id; 
         $this->estado = $estado; // No es necesario si solo estás usando $id como parámetro
@@ -176,8 +176,15 @@ class UsuariosModel extends Query {
         $data = $this->save($sql, $datos);  // Cambia this-save a this->save
         return $data;
     }
+
+    public function modificarPass(string $clave , int $id){
+        $sql = "UPDATE usuarios SET clave = ? WHERE id = ?";
+        $datos = array($clave , $id);
+        $data = $this->save($sql, $datos);
+        return $data;
+
+    }   
     
-       
 }
     
 

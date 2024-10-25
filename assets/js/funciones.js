@@ -256,8 +256,6 @@ export function registrarUser(e) {
     }
 }
 
-
-
 export function btnEditarUser(id) {
     document.getElementById("title").innerHTML = "Actualizar Usuario";
     document.getElementById("btnAccion").innerHTML = "Modificar";
@@ -294,7 +292,6 @@ export function btnEditarUser(id) {
     };
 
 }
-
 
 export function limpiarFormulario() {
     document.getElementById("frmUsuario").reset(); 
@@ -528,7 +525,7 @@ export function registrarcliente(e) {
     }
 }
 
-export function btnEditarCliente(id) {
+export function btnEditarCliente(id) {  
     document.getElementById("title").innerHTML = "Actualizar Cliente";
     document.getElementById("btnAccion").innerHTML = "Modificar";
     const url = base_url + "Clientes/editar/" + id;
@@ -643,6 +640,108 @@ export function btnreingresarCliente(id) {
         }
     });
 }
+
+export function frmCambiarPass(e) {
+    e.preventDefault();
+    console.log("Función frmCambiarPass llamada"); // Verificar que se llama la función
+
+    const actual = document.getElementById('clave_actual').value;
+    const nueva = document.getElementById('clave_nueva').value;
+    const confirmar = document.getElementById('confirmar_clave').value;
+
+    // Verificar si los campos están vacíos
+    if (actual === '' || nueva === '' || confirmar === '') {
+        Swal.fire({
+            position: 'center',  // Para centrarlo
+            icon: 'error',
+            title: 'Todos los campos son obligatorios',
+            showConfirmButton: false,
+            timer: 3000,
+            customClass: {
+                popup: 'swal2-center'
+            }
+        });
+        return; // Terminar la función si hay campos vacíos
+    }
+
+    // Validar que las contraseñas coincidan
+    if (nueva !== confirmar) {
+        Swal.fire({
+            position: 'center',
+            icon: 'error',
+            title: 'Las contraseñas no coinciden',
+            showConfirmButton: false,
+            timer: 3000,
+            customClass: {
+                popup: 'swal2-center'
+            }
+        });
+        return; // Terminar la función si las contraseñas no coinciden
+    }
+
+    const url = base_url + "Usuarios/cambiarPass";
+    const frm = document.getElementById("frmCambiarPass");
+    const http = new XMLHttpRequest();
+    http.open("POST", url, true);
+    http.send(new FormData(frm));
+
+    http.onreadystatechange = function() {
+        if (this.readyState === 4) {
+            let res;
+
+            // Intentar parsear la respuesta como JSON
+            try {
+                res = JSON.parse(this.responseText);
+            } catch (error) {
+                // Si no se puede parsear, mostrar el mensaje de error
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: 'Error al procesar la respuesta del servidor',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    customClass: {
+                        popup: 'swal2-center'
+                    }
+                });
+                return; // Terminar la función
+            }
+
+            // Comprobar la respuesta
+            if (res === "ok") { // Comprobar si la respuesta es "ok"
+                $("#cambiarPass").modal("hide");
+                Swal.fire({
+                    position: 'center',
+                    icon: 'success', // Icono de éxito
+                    title: 'Contraseña modificada con éxito', // Mensaje de éxito
+                    showConfirmButton: false,
+                    timer: 3000,
+                    customClass: {
+                        popup: 'swal2-center'
+                    }
+                });
+                frm.reset(); // Reiniciar el formulario
+            } else {
+                // Si la respuesta es un mensaje de error
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: res, // Mostrar el mensaje de error
+                    showConfirmButton: false,
+                    timer: 3000,
+                    customClass: {
+                        popup: 'swal2-center'
+                    }
+                });
+            }
+        }
+    }
+}
+
+
+
+
+
 
 
 

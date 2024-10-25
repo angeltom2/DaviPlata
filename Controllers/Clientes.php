@@ -155,7 +155,10 @@ class Clientes extends Controller {
         }
         echo json_encode($msg, JSON_UNESCAPED_UNICODE);
         die();
-    }    
+    } 
+
+
+
 }
 
 ?>
