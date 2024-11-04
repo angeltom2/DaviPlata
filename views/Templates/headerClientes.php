@@ -56,7 +56,7 @@
         min-height: 75vh;
         display: flex;
         align-items: center;
-        justify-content: space-between; /* Espacio entre elementos */
+        justify-content: center; /* Centrar contenido */
         text-align: center;
     }
 
@@ -71,74 +71,110 @@
         animation: fadeInUp 1.5s;
     }
 
-    /* Contenedor para el diálogo y la imagen de la izquierda */
-    .left-container {
-        display: flex;
-        align-items: flex-start; /* Alinear a la parte superior */
-    }
-
-    /* Espacio para imágenes en el masthead */
     .image-space {
         display: flex;
-        justify-content: flex-start; /* Alinear a la izquierda */
-        align-items: flex-start; /* Alinea las imágenes a la parte superior */
-        width: 100%; /* Asegura que ocupe todo el ancho */
-        margin-top: 20px;
+        justify-content: center; /* Centra la imagen principal horizontalmente */
+        align-items: flex-start; /* Alinea la imagen a la parte superior */
+        width: 70%; /* Asegura que ocupe todo el ancho */
+        position: relative; /* Para posicionar el logo sobre la imagen */
     }
 
     .image-space img {
-        width: 15%; /* Ajustar el ancho de la imagen */
+        width: 60%; /* Ajusta el ancho de la imagen a un tamaño más pequeño */
+        max-width: 100%; /* Asegura que no exceda el contenedor */
+        display: block; /* Cambia a block para asegurar que no haya espacios en blanco */
+        margin: 0 auto; /* Aplica margen automático para centrar la imagen */
     }
 
-    .dialogue-box {
-        width: 35%; /* Ancho ajustado para que no sea tan ancho */
-        background-color: #e8e8e8;
-        border-radius: 15px; /* Esquinas más redondeadas */
-        padding: 20px;
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3); /* Sombra más profunda */
-        position: relative; /* Posición relativa para la flecha */
-        margin-left: 20px; /* Añadir margen a la izquierda */
+    .logo-overlay {
+        position: relative; /* Cambiar a posición relativa */
+        top: 0; /* Ajusta este valor a 0 */
+        margin-left: auto; /* Mueve el logo a la derecha */
+        width: 0%; /* Ajusta el tamaño del logo, haciéndolo más pequeño */
+        transform: translateY(10%); /* Ajusta la posición vertical del logo */
     }
 
-    .dialogue-box::after {
-        content: "";
-        position: absolute;
-        left: -20px; /* Posiciona la flecha */
-        top: 20px; /* Ajusta según sea necesario */
-        width: 0;
-        height: 0;
-        border-top: 10px solid transparent;
-        border-right: 15px solid #e8e8e8; /* Mismo color que el cuadro */
-        border-bottom: 10px solid transparent;
+    /* Estilos para la sección de contenido alineada a la izquierda */
+    .content-section {
+        background-color: #f9f9f9; /* Color de fondo suave */
+        border-radius: 10px; /* Bordes redondeados */
+        padding: 20px; /* Espaciado interno */
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+        transition: transform 0.3s ease; /* Transición suave para el hover */
+        margin: 20px; /* Margen alrededor del contenedor */
     }
 
-    /* Imagen de la derecha */
-    .right-image {
-        display: flex;
-        justify-content: flex-end; /* Alinear a la derecha */
-        align-items: flex-start; /* Alinea las imágenes a la parte superior */
+    .content-section:hover {
+        transform: scale(1.02); /* Efecto de aumento al pasar el mouse */
     }
 
-    .right-image img {
-        width: 15%; /* Ajustar el ancho de la imagen */
+    .title {
+        font-size: 2rem; /* Tamaño de fuente del título */
+        color: #4e000b; /* Color del texto */
+        margin-bottom: 20px; /* Espacio inferior */
+        text-align: center; /* Centramos el texto */
+        animation: fadeInDown 0.5s; /* Animación de entrada */
     }
 
-    .project-text h4 {
-        color: #000;
+    .options {
+        display: flex; /* Usar flexbox para opciones */
+        flex-direction: column; /* Apilar verticalmente */
+        gap: 15px; /* Espaciado entre opciones */
     }
 
-    .project-text p {
-        color: #555;
+    .option {
+        display: flex; /* Usar flexbox para icono y texto */
+        align-items: center; /* Centrar verticalmente */
+        background-color: #fff; /* Fondo blanco para cada opción */
+        border-radius: 8px; /* Bordes redondeados */
+        padding: 15px; /* Espaciado interno */
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sombra suave */
+        transition: background-color 0.3s, transform 0.3s; /* Transición para efectos */
+    }
+
+    .option:hover {
+        background-color: #eaeaea; /* Fondo claro al pasar el mouse */
+        transform: translateY(-2px); /* Levantar la opción al pasar el mouse */
+    }
+
+    .option .icon {
+        font-size: 1.5rem; /* Tamaño del icono */
+        color: #4e000b; /* Color del icono */
+        margin-right: 15px; /* Espacio entre icono y texto */
+        transition: transform 0.3s; /* Transición para animar el icono */
+    }
+
+    .option:hover .icon {
+        transform: scale(1.1); /* Aumentar el icono al pasar el mouse */
+    }
+
+    .option-text {
+        font-size: 1.2rem; /* Tamaño del texto de la opción */
+        color: #333; /* Color del texto */
+    }
+
+    .info {
+        margin-top: 20px; /* Espacio superior para información adicional */
+        padding: 15px; /* Padding para separar del borde */
+        background-color: #e0f7fa; /* Color de fondo suave */
+        border-radius: 10px; /* Bordes redondeados */
+        animation: fadeInUp 0.5s; /* Animación de entrada */
+    }
+
+    .info p {
+        margin: 5px 0; /* Espaciado entre párrafos */
+        font-size: 1.1rem; /* Tamaño del texto */
+        color: #555; /* Color del texto */
     }
 
     /* Animaciones */
     @keyframes fadeInDown {
-        from { opacity: 0; transform: translateY(-20px); }
+        from { opacity: 0; transform: translateY(-10px); }
         to { opacity: 1; transform: translateY(0); }
     }
 
     @keyframes fadeInUp {
-        from { opacity: 0; transform: translateY(20px); }
+        from { opacity: 0; transform: translateY(10px); }
         to { opacity: 1; transform: translateY(0); }
     }
 
@@ -183,35 +219,89 @@
     }
 
     .footer-section {
-        background-color: #4e000b;
-        padding: 3rem 0;
-        text-align: center;
+        background: linear-gradient(135deg, #4e000b, #9c2433); /* Fondo degradado */
+        color: white; /* Color del texto */
+        padding: 20px 0; /* Espaciado superior e inferior */
+        position: relative; /* Para posicionar el pseudo-elemento */
+        overflow: hidden; /* Para ocultar desbordamientos */
     }
 
-    .social-icon {
-        font-size: 2rem;
-        margin: 0 1rem;
-        color: #fff;
+    .footer-section::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.2); /* Capa oscurecedora */
+        z-index: 1; /* Coloca la capa sobre el fondo */
+    }
+
+    .container {
+        justify-content: center;
+        position: relative; /* Asegura que el contenido esté por encima de la capa */
+        z-index: 2; /* Asegura que el contenido esté por encima de la capa */
     }
 
     .btn-volver {
-        background-color: #4e000b;
-        color: white;
-        border: none;
-        padding: 10px 20px;
-        font-size: 1.2rem;
-        border-radius: 5px;
-        transition: background-color 0.3s, transform 0.3s;
+    background-color: #f0f0f0; /* Fondo del botón */
+    color: #4e000b; /* Color del texto del botón */
+    padding: 10px 20px; /* Espaciado interno */
+    border: none; /* Sin borde */
+    border-radius: 25px; /* Bordes redondeados */
+    font-size: 1rem; /* Tamaño de fuente */
+    transition: background-color 0.3s; /* Transición suave */
+    display: block; /* O inline-block */
+    margin: 0 auto; /* Márgenes automáticos para centrar */
     }
 
     .btn-volver:hover {
-        background-color: #6c000f;
-        transform: scale(1.05);
+        background-color: #ddd; /* Color de fondo al pasar el mouse */
     }
+
+    .footer-content {
+    display: flex; /* Usar flexbox */
+    justify-content: space-between; /* Espacio entre elementos */
+    align-items: flex-start; /* Alinear verticalmente al inicio */
+    padding: 15px 30px; /* Espaciado interno */
+    position: relative; /* Añadir esta propiedad si no está ya presente */
+    }
+
+    .social-icons {
+        display: flex; /* Usar flexbox para iconos */
+        gap: 20px; /* Espaciado entre iconos */
+        margin-left: auto; /* Empuja los iconos a la derecha */
+        align-self: flex-start; /* Alinea los iconos al inicio de la sección */
+        margin-top: -10px; /* Ajust /* Alinea los iconos al inicio de la sección */
+    }
+
+    .social-icons a {
+        color: white; /* Color de los iconos */
+        font-size: 3rem; /* Tamaño de los iconos */
+        transition: color 0.3s; /* Transición para el color */
+    }
+
+    .social-icons a:hover {
+        color: #ddd; /* Color al pasar el mouse */
+    }
+
+    .app-download {
+        display: flex; /* Asegura que los iconos se alineen correctamente */
+        justify-content: center; /* Centra los iconos horizontalmente */
+        align-items: center; /* Centra los iconos verticalmente */
+        padding: 10px; /* Espaciado interno para dar margen */
+    }
+
+    .app-download img { /* Si los iconos son imágenes */
+        width: 150px; /* Ajusta el tamaño de los iconos */
+        height: auto; /* Mantiene la proporción de la imagen */
+        margin: 0 10px; /* Espaciado entre iconos */
+    }
+
+    .app-download a:hover {
+        transform: scale(1.1); /* Aumenta ligeramente el tamaño al pasar el mouse */    
+    }   
 </style>
-
-
-
 
 </head>
 <body id="page-top">
@@ -242,122 +332,136 @@
         </div>
     </nav>
 
-    <header class="masthead">
+    
+
+<header class="masthead">
     <div class="container">
         <h1 class="mx-auto my-0 text-uppercase">Daviplata</h1>
-        <h2 class="mx-auto mt-2 mb-5">Atención al Cliente Personalizada y Eficaz</h2>
-        <div class="image-space d-flex align-items-start justify-content-between"> <!-- Utiliza flexbox -->
-            <div class="d-flex align-items-start"> <!-- Contenedor para la imagen izquierda y el diálogo -->
-                <img src="assets/img/asesor.png" alt="Imagen Izquierda" class="img-fluid img-left"> <!-- Imagen Izquierda -->
-                <div class="dialogue-box">
-                    <h4>Estamos aquí para ayudarte!</h4>
-                    <p>Si tienes alguna consulta, por favor háznoslo saber.</p>
+        <div class="d-flex align-items-start">
+            <div class="content-section text-left mr-3">
+                <div class="title">Como Recibir Dinero</div>
+                <div class="options">
+                    <div class="option">
+                        <div class="icon"><i class="fas fa-globe-americas"></i></div>
+                        <div class="option-text">Recibiendo giros nacionales e internacionales</div>
+                    </div>
+                    <div class="option">
+                        <div class="icon"><i class="fas fa-university"></i></div>
+                        <div class="option-text">Desde una cuenta Davivienda</div>
+                    </div>
+                    <div class="option">
+                        <div class="icon"><i class="fas fa-building"></i></div>
+                        <div class="option-text">Desde oficinas Davivienda</div>
+                    </div>
+                    <div class="option">
+                        <div class="icon"><i class="fas fa-exchange-alt"></i></div>
+                        <div class="option-text">Desde otro banco</div>
+                    </div>
+                    <div class="option">
+                        <div class="icon"><i class="fas fa-briefcase"></i></div>
+                        <div class="option-text">A través de abonos de nómina</div>
+                    </div>
+                    <div class="option">
+                        <div class="icon"><i class="fas fa-mobile-alt"></i></div>
+                        <div class="option-text">Desde otro DaviPlata</div>
+                    </div>
+                </div>
+                <div class="info">
+                    <p>La plata que tiene en su celular,</p>
+                    <p>la puede sacar en:</p>
+                    <p><strong>Cajeros Automáticos Davivienda.</strong></p>
                 </div>
             </div>
-            <img src="assets/img/celular daviplata.png" alt="Imagen Derecha" class="img-fluid img-right"> <!-- Imagen Derecha -->
+            <div class="image-space"> 
+                <img src="assets/img/1.png" alt="Imagen" class="img-fluid"> 
+            </div>
+            <div class="logo-container">
+                <img src="assets/img/logoD.png" alt="Logo" class="logo-overlay">
+            </div>
         </div>
     </div>
 </header>
 
-
-
-
-
     <!-- Services Section -->
-    <section id="services" class="services-section"> 
+<section id="services" class="services-section">  
     <div class="container px-4 px-lg-5">
         <h2 class="text-center">Servicios que Ofrecemos</h2>
         <div class="row justify-content-center">
             <div class="col-lg-4 col-md-6 mb-4">
                 <div class="service-item">
-                    <i class="service-icon fas fa-phone"></i>
-                    <h4>Asesoría Telefónica</h4>
-                    <p>Recibe asistencia inmediata a través de nuestra línea de atención al cliente.</p>
+                    <i class="service-icon fas fa-ticket-alt"></i>
+                    <h4>Atención con Tickets</h4>
+                    <p>Gestionamos tus consultas a través de un sistema de tickets con un asesor.</p>
                 </div>
             </div>
             <div class="col-lg-4 col-md-6 mb-4">
                 <div class="service-item">
                     <i class="service-icon fas fa-comments"></i>
                     <h4>Chat en Vivo</h4>
-                    <p>Interactúa con nuestros agentes en tiempo real para resolver tus inquietudes.</p>
+                    <p>Comunícate con nosotros a través de nuestro chat en vivo disponible 24/7.</p>
                 </div>
             </div>
-            <div class="col-lg-4 col-md-6 mb-4">
-                <div class="service-item">
-                    <i class="service-icon fas fa-ticket"></i>
-                    <h4>Sistema de Ticket</h4>
-                    <p>Sus solicitudes serán procesadas por un asesor para resolver cualquier inquietud.</p>
-                </div>
-            </div>
-            <!-- Nueva sección para reseñas -->
             <div class="col-lg-4 col-md-6 mb-4">
                 <div class="service-item">
                     <i class="service-icon fas fa-star"></i>
-                    <h4>Sistema de encuestas</h4>
-                    <p>¡Déjanos tu opinión y ayúdanos a mejorar! Tu feedback es importante para nosotros.</p>
+                    <h4>Califica Nuestro Servicio</h4>
+                    <p>Deja tu opinión sobre nuestro servicio y ayúdanos a mejorar.</p>
                 </div>
             </div>
         </div>
     </div>
 </section>
 
-
     <!-- Benefits Section -->
-    <section id="benefits" class="benefits-section">
+<section id="benefits" class="benefits-section">
     <div class="container px-4 px-lg-5">
-        <h2 class="text-center">Beneficios de Usar Daviplata</h2>
+        <h2 class="text-center">Beneficios de Nuestros Servicios</h2>
         <div class="row justify-content-center">
             <div class="col-lg-4 col-md-6 mb-4">
                 <div class="benefit-item">
-                    <i class="benefit-icon fas fa-bolt"></i>
-                    <h4>Acceso Rápido</h4>
-                    <p>Obtén respuestas al instante desde donde estés.</p>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6 mb-4">
-                <div class="benefit-item">
-                    <i class="benefit-icon fas fa-user-shield"></i>
-                    <h4>Soporte Personalizado</h4>
-                    <p>Recibe atención adaptada a tus necesidades específicas.</p>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6 mb-4">
-                <div class="benefit-item">
-                    <i class="benefit-icon fas fa-clock"></i>
-                    <h4>Respuestas Rápidas</h4>
-                    <p>Resoluciones efectivas para tus preguntas en tiempo real.</p>
+                    <i class="benefit-icon fas fa-shield-alt"></i>
+                    <h4>Seguridad</h4>
+                    <p>Garantizamos la seguridad de tus datos personales y transacciones.</p>
                 </div>
             </div>
             <div class="col-lg-4 col-md-6 mb-4">
                 <div class="benefit-item">
                     <i class="benefit-icon fas fa-thumbs-up"></i>
-                    <h4>Facilidad de Uso</h4>
-                    <p>Interfaz intuitiva para facilitar tu experiencia y que tengas un mejor ambiente.</p>
+                    <h4>Calidad</h4>
+                    <p>Nuestros servicios están diseñados para ofrecer la mejor experiencia al cliente.</p>
                 </div>
             </div>
             <div class="col-lg-4 col-md-6 mb-4">
                 <div class="benefit-item">
                     <i class="benefit-icon fas fa-clock"></i>
-                    <h4>Disponibilidad 24/7</h4>
-                    <p>Estamos siempre disponibles para ayudarte, sin importar la hora.</p>
+                    <h4>Disponibilidad</h4>
+                    <p>Estamos disponibles para ti en cualquier momento del día.</p>
                 </div>
             </div>
             <div class="col-lg-4 col-md-6 mb-4">
                 <div class="benefit-item">
                     <i class="benefit-icon fas fa-comments"></i>
-                    <h4>Canales Diversos</h4>
-                    <p>Comunicación a través de múltiples canales para tu comodidad.</p>
+                    <h4>Atención Personalizada</h4>
+                    <p>Nuestro equipo te brindará atención personalizada para resolver tus inquietudes.</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="benefit-item">
+                    <i class="benefit-icon fas fa-sync-alt"></i>
+                    <h4>Facilidad de Uso</h4>
+                    <p>Nuestra plataforma es intuitiva y fácil de usar, sin complicaciones.</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="benefit-item">
+                    <i class="benefit-icon fas fa-lightbulb"></i>
+                    <h4>Innovación</h4>
+                    <p>Incorporamos tecnologías innovadoras para mejorar constantemente nuestros servicios.</p>
                 </div>
             </div>
         </div>
     </div>
 </section>
-
-
-
-
-
-
 
 
 
