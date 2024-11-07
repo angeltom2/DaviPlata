@@ -1,71 +1,106 @@
-
 <?php
-class Tickets extends Controller {
 
+set_error_handler(function($errno, $errstr) {
+    $response = [
+        'success' => false,
+        'message' => 'Error en el servidor: ' . $errstr
+    ];
+    echo json_encode($response);
+    exit; // Detiene la ejecución si ocurre un error
+});
+
+class Tickets extends Controller {
+    private $model;
+
+    public function __construct() {
+        session_start();
+        parent::__construct(); 
+        $this->model = $this->TicketsModel; // Usando la propiedad dinámica
+        if ($this->model == null) {
+            echo "Modelo no cargado correctamente.";
+            die();  // Detener la ejecución si el modelo no se carga
+        }
+    }
+
+    // Método principal: Mostrar la vista de tickets
     public function index() {
         $this->views->getView($this, "index");
     }
 
-
     public function registrarTicket() {
+        // Establecer el tipo de respuesta como JSON
         header('Content-Type: application/json');
-        
+    
+        // Iniciar sesión si no está iniciada
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+    
         // Leer el cuerpo de la solicitud como JSON
         $input = json_decode(file_get_contents('php://input'), true);
     
-        // Recoger los datos enviados por el cliente
-        $queja = $input['queja'] ?? '';  
+        // Verificar que la solicitud contiene datos
+        if (!$input) {
+            echo json_encode(["success" => false, "message" => "Datos no válidos o solicitud vacía"], JSON_UNESCAPED_UNICODE);
+            exit;
+        }
     
-        // Validar que los campos obligatorios estén completos
+        // Validar los datos recibidos
+        $queja = $input['queja'] ?? '';
+        $dni_cliente = $input['dni'] ?? '';
+    
+        // Validar que la queja no esté vacía
         if (empty($queja)) {
             echo json_encode(["success" => false, "message" => "La queja no puede estar vacía"], JSON_UNESCAPED_UNICODE);
-            die();
+            exit;
         }
     
-        // Obtener el DNI de la sesión
-        session_start(); // Asegúrate de que la sesión esté iniciada
-        if (!isset($_SESSION['dni_usuario'])) {
-            echo json_encode(["success" => false, "message" => "No autenticado"], JSON_UNESCAPED_UNICODE);
-            die();
+        // Validar que el DNI no esté vacío
+        if (empty($dni_cliente)) {
+            echo json_encode(["success" => false, "message" => "El DNI es obligatorio"], JSON_UNESCAPED_UNICODE);
+            exit;
         }
     
-        $dni_cliente = $_SESSION['dni_usuario'];  // Obtener el DNI de la sesión
+        // Validar que el DNI tenga exactamente 10 dígitos
+        if (strlen($dni_cliente) !== 10 || !ctype_digit($dni_cliente)) {
+            echo json_encode(["success" => false, "message" => "El DNI debe tener exactamente 10 dígitos numéricos"], JSON_UNESCAPED_UNICODE);
+            exit;
+        }
     
         // Determinar la prioridad de la queja
         $prioridad = $this->obtenerPrioridad($queja);
     
         // Obtener la fecha actual
-        $fecha_subida = date('Y-m-d H:i:s');  
+        $fecha_subida = date('Y-m-d H:i:s');
     
-        // Asignar el estado del ticket
-        $status = 'Abierto'; 
-        
-        // Llamar al modelo para registrar el ticket
-        $data = $this->model->registrarTicket($dni_cliente, $queja, $prioridad, $fecha_subida, $status);
+        // Llamar al modelo para registrar el ticket en la base de datos
+        try {
+            $resultado = $this->model->registrarTicket($fecha_subida, $queja, $prioridad, $dni_cliente);
     
-        // Responder según el resultado
-        if ($data == "ok") {
-            echo json_encode(["success" => true, "message" => "Ticket registrado exitosamente"], JSON_UNESCAPED_UNICODE);
-        } else {
-            echo json_encode(["success" => false, "message" => "Error al registrar el ticket"], JSON_UNESCAPED_UNICODE);
+            // Verificar el resultado del modelo
+            if ($resultado === "ok") {
+                echo json_encode(["success" => true, "message" => "Ticket registrado exitosamente"], JSON_UNESCAPED_UNICODE);
+            } else {
+                throw new Exception("Error al registrar el ticket en la base de datos");
+            }
+        } catch (Exception $e) {
+            echo json_encode(["success" => false, "message" => $e->getMessage()], JSON_UNESCAPED_UNICODE);
         }
     
-        die();
+        die(); // Termina la ejecución para evitar respuestas adicionales
     }
     
+
+    // Función privada para determinar la prioridad de la queja
     private function obtenerPrioridad($queja) {
-        // Simple lógica de ejemplo para determinar la prioridad según la queja
-        if (strpos($queja, "urgente") !== false) {
+        // Determinar la prioridad basándose en la palabra clave de la queja
+        if (stripos($queja, "urgente") !== false) {
             return "Alta";
-        } else if (strpos($queja, "normal") !== false) {
+        } elseif (stripos($queja, "normal") !== false) {
             return "Media";
         } else {
             return "Baja";
         }
     }
-    
-
-
-
 }
 ?>

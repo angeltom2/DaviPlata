@@ -1,42 +1,40 @@
 <?php
-class TicketsModel extends Query{
+class TicketsModel extends Query {
 
-    public function registrarTicket(string $dni_cliente, string $queja, string $prioridad, string $fecha_subida, string $status) {
-        // Asignar los valores a las variables
-        $this->dni_cliente = $dni_cliente;
-        $this->queja = $queja;
-        $this->prioridad = $prioridad;
+    // Definir las propiedades de la clase
+    private $fecha_subida;
+    private $queja;
+    private $priority;  // Cambiado de 'prioridad' a 'priority'
+    private $status;
+    private $dni_cliente;
+
+    public function registrarTicket(string $fecha_subida, string $queja, string $priority, string $dni_cliente) {
+        // Asignar los valores a las propiedades
         $this->fecha_subida = $fecha_subida;
-        $this->status = $status;
-    
-        // Comprobar si ya existe un ticket para ese cliente (puedes agregar lógica adicional si es necesario)
+        $this->queja = $queja;
+        $this->priority = $priority;  // Asignar 'priority' en lugar de 'prioridad'
+        $this->status = 'Abierto';  // Se asigna 'Abierto' como el estado del ticket
+        $this->dni_cliente = $dni_cliente;
+
+        // Comprobar si ya existe un ticket abierto para ese cliente
         $verificar = "SELECT * FROM tickets WHERE dni_cliente = '$this->dni_cliente' AND status = 'Abierto'";
-    
         $existe = $this->select($verificar);
-    
+
         if (empty($existe)) {
-            // Insertar el nuevo ticket en la base de datos
-            $sql = "INSERT INTO tickets (dni_cliente, queja, prioridad, fecha_subida, status) VALUES (?, ?, ?, ?, ?)";
-            $datos = array($this->dni_cliente, $this->queja, $this->prioridad, $this->fecha_subida, $this->status);
+            // Insertar el nuevo ticket en el orden correcto de las columnas de la tabla
+            // La columna 'solucion' se pasa como NULL
+            $sql = "INSERT INTO tickets (fecha_subida, queja, priority, status, dni_cliente, solucion) VALUES (?, ?, ?, ?, ?, NULL)";
+            $datos = array($this->fecha_subida, $this->queja, $this->priority, $this->status, $this->dni_cliente);
             $data = $this->save($sql, $datos);
-    
+
             // Comprobar si la inserción fue exitosa
-            if ($data == 1) {
-                $res = "ok";
-            } else {
-                $res = "error";
-            }
+            $res = $data == 1 ? "ok" : "error";
         } else {
-            $res = "existe";  // Puede haber un ticket abierto para ese cliente
+            $res = "existe";
         }
-    
+
         return $res;
     }
-    
-
-
-
-
 }
-
 ?>
+

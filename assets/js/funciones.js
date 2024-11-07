@@ -740,6 +740,9 @@ export function frmCambiarPass(e) {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+export function clearMessage() {
+    document.getElementById("ticketMessage").value = ""; 
+}   
 
 
 
