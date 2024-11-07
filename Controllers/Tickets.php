@@ -22,7 +22,6 @@ class Tickets extends Controller {
         }
     }
 
-    // Método principal: Mostrar la vista de tickets
     public function index() {
         $this->views->getView($this, "index");
     }
@@ -90,8 +89,6 @@ class Tickets extends Controller {
         die(); // Termina la ejecución para evitar respuestas adicionales
     }
     
-
-    // Función privada para determinar la prioridad de la queja
     private function obtenerPrioridad($queja) {
         // Determinar la prioridad basándose en la palabra clave de la queja
         if (stripos($queja, "urgente") !== false) {
@@ -102,5 +99,42 @@ class Tickets extends Controller {
             return "Baja";
         }
     }
+
+    public function listar() {
+        // Obtener los tickets desde el modelo
+        $data = $this->model->getTickets(); 
+        
+        error_log(print_r($data, true));  // Para depurar y ver los datos
+        
+        // Procesar los datos para agregar los cambios de estado y las acciones
+        for ($i = 0; $i < count($data); $i++) {
+            // Cambiar el estado a una etiqueta con estilo
+            if (isset($data[$i]['status'])) {
+                if ($data[$i]['status'] == 'Abierto') {
+                    $data[$i]['status'] = 'Abierto'; // Solo el texto, sin etiquetas
+                } elseif ($data[$i]['status'] == 'Cerrado') {
+                    $data[$i]['status'] = 'Cerrado'; // Solo el texto, sin etiquetas
+                } else {
+                    $data[$i]['status'] = 'En Progreso'; // Cambié la lógica aquí para "En Progreso"
+                }
+            } else {
+                $data[$i]['status'] = 'No disponible'; // Default si no hay estado
+            }
+    
+            // Agregar la columna de "acciones"
+            $data[$i]['acciones'] = '<div> 
+                <button class="btn btn-warning btn-sm" type="button" onclick="editarTicket(' . $data[$i]['id'] . ');">Editar</button>
+            </div>';
+        }
+        
+        // Devolver los datos en formato JSON
+        echo json_encode($data, JSON_UNESCAPED_UNICODE);
+        die();
+    }
+    
+    
+    
+    
+    
 }
 ?>

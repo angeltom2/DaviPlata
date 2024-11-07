@@ -122,23 +122,23 @@
             <h2 class="mb-4">Mis Tickets</h2>
 
             <!-- Tabla de Tickets -->
-            <div class="table-container">
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Fecha Subida</th>
-                            <th>Queja</th>
-                            <th>Prioridad</th>
-                            <th>Status</th>
-                            <th>Solución</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
-            </div>
+<div class="table-container">
+    <table id="tblTickets" class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Fecha Subida</th>
+                <th>Queja</th>
+                <th>Prioridad</th>
+                <th>Status</th>
+                <th>Solución</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+</div>
 
             <!-- Crear Ticket -->
             <div class="message-box mt-4">
@@ -168,14 +168,16 @@
     <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <script>
+
+<script>
     const base_url = "http://localhost/daviplata/";
+    let tblTickets;
 
-        function clearMessage() {
-            document.getElementById("ticketMessage").value = "";
-        }
+    function clearMessage() {
+        document.getElementById("ticketMessage").value = "";
+    }
 
-        function registrarTicket() {
+    function registrarTicket(callback) {
             let queja = document.getElementById("ticketMessage").value;
             let dni = document.getElementById("dni").value;
 
@@ -247,6 +249,7 @@
                                 });
                                 document.getElementById("ticketMessage").value = "";
                                 document.getElementById("dni").value = "";
+                                
                             } else {
                                 Swal.fire({
                                     position: 'center',
@@ -287,8 +290,72 @@
                 }
             };
             http.send(JSON.stringify({ queja, dni }));
-        }
-    </script>
+    }
+    
+    document.addEventListener("DOMContentLoaded", function () {
+
+    $(document).ready(function() {
+    tblTickets = $('#tblTickets').DataTable({
+        "lengthChange": false,   // Desactiva "Show entries"
+        "paging": true,          // Habilita la paginación
+        "searching": true,       // Habilita la búsqueda
+        "info": true,            // Muestra la información (total de registros)
+        "ajax": {
+            "url": base_url + "tickets/listar",  // URL para obtener los datos de los tickets
+            "dataSrc": function (json) {
+                console.log("Datos recibidos del servidor:", json); // Verifica los datos recibidos
+                return json; // Retorna los datos sin modificar
+            }
+        },
+        "columns": [
+            { 'data': 'id' },                       // ID del ticket
+            { 'data': 'fecha_subida' },             // Fecha en que se subió el ticket
+            { 'data': 'queja' },                    // Descripción de la queja
+            { 'data': 'priority' },                 // Cambié 'prioridad' por 'priority' para que coincida con la columna devuelta
+            {
+                'data': 'status',                   // Estado del ticket (por ejemplo, "Abierto", "Cerrado" o "En Progreso")
+                'render': function (data) {
+                    let status, color;
+                    if (data.includes("Abierto")) {
+                        status = 'Abierto';
+                        color = '#ffc107'; // Amarillo para Abierto
+                    } else if (data.includes("Cerrado")) {
+                        status = 'Cerrado';
+                        color = '#28a745'; // Verde para Cerrado
+                    } else if (data.includes("En Progreso")) {
+                        status = 'En Progreso';
+                        color = '#17a2b8'; // Azul para En Progreso
+                    }
+                    return `<span style="color: white; background-color: ${color}; border-radius: 5px; padding: 5px 10px; font-weight: bold; display: inline-block; text-align: center;">${status}</span>`;
+                }
+            },
+            { 'data': 'solucion' },                 // Solución proporcionada, si la hay
+            {
+                'data': null,                       // Columna para acciones (editar, eliminar, ver detalles)
+                'render': function (data, type, row) {
+                    return `
+                        <button class="btn btn-warning btn-sm" onclick="editarTicket(${row.id})">Editar</button>
+                    `;
+                }
+            }
+        ]
+    });
+    });
+
+
+    $('#reloadTable').on('click', function () {
+        tblTickets.ajax.reload(null, false); 
+    });
+
+    });
+
+
+</script>
+
+
+
+
+
 
 </body>
 

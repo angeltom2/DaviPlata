@@ -75,6 +75,7 @@ class Usuarios extends Controller {
                         $_SESSION['id_usuario'] = $data['id'];
                         $_SESSION['usuario'] = isset($data['usuario']) ? $data['usuario'] : ''; // Manejar undefined
                         $_SESSION['nombre'] = isset($data['nombre']) ? $data['nombre'] : ''; // Manejar undefined
+                        $_SESSION['dni_cliente'] = $data['dni']; // Guarda el DNI del cliente en la sesión
                         $msg = "ok"; // Inicio de sesión exitoso
                     } else {
                         $msg = "La contraseña es incorrecta"; // Mensaje específico
@@ -88,6 +89,7 @@ class Usuarios extends Controller {
         echo json_encode($msg, JSON_UNESCAPED_UNICODE);
         die(); 
     }
+    
     
     public function registrar() {
         header('Content-Type: application/json');

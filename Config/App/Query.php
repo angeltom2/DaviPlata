@@ -16,6 +16,11 @@ class Query extends conexion {
         }
     }
 
+    // Método para obtener la conexión
+    public function getCon() {
+        return $this->con;
+    }
+
     public function select(string $sql, array $datos = []) {  
         $this->sql = $sql;
 
@@ -65,5 +70,5 @@ class Query extends conexion {
     }
 }
 
-
 ?>
+
