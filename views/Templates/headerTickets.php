@@ -5,18 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestión de Tickets</title>
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet" />
-    
+
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f5f5f5;
+            font-family: 'Varela Round', sans-serif;
+            background-color: #f8f9fa;
         }
         .sidebar {
             background-color: #ffffff;
@@ -31,10 +27,6 @@
         .profile-info img {
             width: 80px;
             border-radius: 50%;
-        }
-        .profile-info h3 {
-            font-size: 1.2em;
-            margin: 10px 0;
         }
         .menu-item {
             font-size: 1em;
@@ -80,25 +72,32 @@
             height: 100px;
             resize: none;
         }
+        .btn-clean {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            transition: background-color 0.3s;
+        }
+        .btn-clean:hover {
+            background-color: #c82333;
+        }
     </style>
 </head>
 <body>
 
 <div class="d-flex">
-    
+    <!-- Sidebar -->
     <div class="sidebar col-md-3">
         <div class="profile-info">
-            <img src="https://via.placeholder.com/80" alt="Profile Picture">
+            <img src="assets/img/person2.png" alt="Profile Picture">
         </div>
-        <a href="#" class="menu-item">Profile</a>
-        <a href="#" class="menu-item">Addresses</a>
-        <a href="#" class="menu-item">Wishlist</a>
-        <a href="#" class="menu-item active">My Tickets <span class="badge bg-primary"></span></a>
+        <a href="http://localhost/daviplata/VistaClientes" class="menu-item">Regresar</a>
+        <a href="#" class="menu-item">Mis Tickets <span class="badge bg-primary"></span></a>
     </div>
 
-    <!-- Main Content -->
+    
     <div class="content col-md-9">
-        <h2 class="mb-4">My Tickets</h2>
+        <h2 class="mb-4">Mis Tickets</h2>
         
         <!-- Tabla de Tickets -->
         <div class="table-container">
@@ -106,26 +105,26 @@
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Date Submitted</th>
-                        <th>Last Updated</th>
-                        <th>Type</th>
-                        <th>Priority</th>
+                        <th>Fecha Subida</th>
+                        <th>Queja</th>
+                        <th>Prioridad</th>
                         <th>Status</th>
-                        <th>Actions</th>
+                        <th>solucion</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
-                    
                 </tbody>
             </table>
         </div>
 
-        <!-- Message Box -->
         <div class="message-box mt-4">
-            <h5>Leave Message</h5>
-            <textarea placeholder="Write your message here..."></textarea>
-            <button class="btn btn-primary mt-2">Enviar Tickets</button>
+            <h5>Crear Tickets</h5>
+            <textarea id="ticketMessage" placeholder="Escribe tu mensaje aquí..."></textarea>
+            <div class="mt-2">
+                <button class="btn btn-primary" onclick="registrarTicket()">Enviar Tickets</button>
+                <button class="btn btn-clean" onclick="clearMessage()"><i class="fas fa-trash-alt"></i> Limpiar</button>
+            </div>
         </div>
     </div>
 </div>
-
