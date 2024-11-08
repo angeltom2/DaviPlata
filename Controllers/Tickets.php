@@ -93,7 +93,7 @@ class Tickets extends Controller {
         // Determinar la prioridad basándose en la palabra clave de la queja
         if (stripos($queja, "urgente") !== false) {
             return "Alta";
-        } elseif (stripos($queja, "normal") !== false) {
+        } elseif (stripos($queja, "problema") !== false) {
             return "Media";
         } else {
             return "Baja";
@@ -131,7 +131,42 @@ class Tickets extends Controller {
         echo json_encode($data, JSON_UNESCAPED_UNICODE);
         die();
     }
+
+    public function editar(int $id) {
+        $data = $this->model->obtenerTicketPorId($id);
+        echo json_encode($data, JSON_UNESCAPED_UNICODE);
+        die();
+    }
     
+    public function modificar() {
+        $id = $_POST['id'];
+        $queja = $_POST['queja'];
+        
+        if (!empty($id) && !empty($queja)) {
+            // Obtenemos la prioridad en base a la queja
+            $prioridad = $this->obtenerPrioridad($queja);
+            
+            // Llamamos al modelo para actualizar la queja y la prioridad
+            $result = $this->model->actualizarQueja($queja, $prioridad, $id);
+            
+            if ($result) {
+                echo "modificado";
+            } else {
+                echo "error";
+            }
+        } else {
+            echo "error";
+        }
+        die();
+    }
+
+    public function obtenerTickets() {
+        $tickets = $this->model->getTickets(); // Asume que tienes una función para obtener todos los tickets
+        echo json_encode($tickets);
+        die();
+    }
+    
+
     
     
     

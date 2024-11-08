@@ -70,6 +70,22 @@ class TicketsModel extends Query {
         }
     }
 
+    public function obtenerTicketPorId(int $id) {
+        $sql = "SELECT id, queja FROM tickets WHERE id = ?";
+        $data = $this->select($sql, [$id]);
+        return $data;
+    }
+    
+    public function actualizarQueja(string $queja, string $prioridad, int $id) {
+        $fecha_subida = date("Y-m-d H:i:s"); // Fecha y hora actuales
+        $sql = "UPDATE tickets SET queja = ?, priority = ?, fecha_subida = ? WHERE id = ?";
+        $data = $this->save($sql, [$queja, $prioridad, $fecha_subida, $id]);
+        return $data == 1;
+    }
+    
+    
+    
+
 }
 
 ?>

@@ -140,6 +140,32 @@
     </table>
 </div>
 
+<div id="editar_ticket" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title">
+  <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 600px;">
+    <div class="modal-content" style="border-radius: 12px; box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);">
+      <div class="modal-header" style="background: #800000; border-top-left-radius: 12px; border-top-right-radius: 12px;">
+        <h5 class="modal-title font-weight-bold" id="title" style="color: white;">Editar Queja</h5>
+      </div>
+
+      <div class="modal-body" style="padding: 30px;">
+        <form method="post" id="frmTicket">
+          <input type="hidden" id="id_ticket" name="id_ticket">
+          <div class="form-group">
+            <label for="queja">Queja</label>
+            <textarea id="queja" class="form-control" name="queja" rows="5" placeholder="Ingrese la queja" required></textarea>
+          </div>
+
+          <div class="form-group d-flex justify-content-between" style="margin-top: 20px;">
+            <button class="btn btn-danger" type="button" data-dismiss="modal" id="cancelar-btn">Cancelar</button>
+            <button class="btn btn-secondary" type="button" onclick="limpiarFormulario();">Limpiar</button>
+            <button class="btn btn-primary" type="button" onclick="modificarTicket(event);" id="btnAccion">Modificar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
             <!-- Crear Ticket -->
             <div class="message-box mt-4">
                 <h5>Crear Tickets</h5>
@@ -349,6 +375,157 @@
 
     });
 
+    function editarTicket(id) {
+    document.getElementById("title").innerHTML = "Editar Queja";
+    document.getElementById("btnAccion").innerHTML = "Modificar";
+    const url = base_url + "Tickets/editar/" + id;
+    const http = new XMLHttpRequest();
+    http.open("GET", url, true);
+    http.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+    http.send();
+    http.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            try {
+                const res = JSON.parse(this.responseText);
+                document.getElementById("id_ticket").value = res.id;
+                document.getElementById("queja").value = res.queja;
+                $("#editar_ticket").modal("show");
+            } catch (error) {
+                console.error("Error parsing JSON:", error);
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: 'Error en la respuesta del servidor',
+                    showConfirmButton: false,
+                    timer: 3000
+                });
+            }
+        }
+    };
+    }
+
+    function modificarTicket(event) {
+    event.preventDefault();
+    const id = document.getElementById("id_ticket").value;
+    const queja = document.getElementById("queja").value.trim(); // eliminamos espacios en blanco
+
+    // Validación: que la queja no esté vacía
+    if (queja === "") {
+        Swal.fire({
+            position: 'center',
+            icon: 'warning',
+            title: 'La queja no puede estar vacía',
+            showConfirmButton: false,
+            timer: 3000
+        });
+        return;
+    }
+
+    // Confirmación de SweetAlert2
+    Swal.fire({
+        title: "¿Estás seguro de modificar la queja?",
+        text: `La nueva queja será: "${queja}"`,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Sí, modificar",
+        cancelButtonText: "Cancelar",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            const url = base_url + "Tickets/modificar";
+            const data = new FormData();
+            data.append("id", id);
+            data.append("queja", queja);
+
+            const http = new XMLHttpRequest();
+            http.open("POST", url, true);
+            http.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+            http.send(data);
+
+            http.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    const res = this.responseText.trim();
+                    if (res === "modificado") {
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            title: 'Ticket modificado correctamente',
+                            showConfirmButton: false,
+                            timer: 3000
+                        });
+                        $("#editar_ticket").modal("hide");
+                        cargarTickets();
+                    } else {
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'error',
+                            title: 'Error al modificar el ticket',
+                            showConfirmButton: false,
+                            timer: 3000
+                        });
+                    }
+                }
+            };
+        }
+    });
+    }
+
+
+    function cargarTickets() {
+    const url = base_url + "Tickets/obtenerTickets"; // URL de la función obtenerTickets en el controlador
+
+    fetch(url, {
+        method: "GET",
+        headers: { "X-Requested-With": "XMLHttpRequest" }
+    })
+    .then(response => response.json())
+    .then(data => {
+        const tableBody = document.querySelector("#tblTickets tbody");
+        tableBody.innerHTML = ""; // Limpia la tabla antes de llenarla nuevamente
+
+        data.forEach(ticket => {
+            // Definimos los estilos del campo status
+            let statusHtml;
+            if (ticket.status.includes("Abierto")) {
+                statusHtml = `<span style="color: white; background-color: #ffc107; border-radius: 5px; padding: 5px 10px; font-weight: bold; display: inline-block; text-align: center;">Abierto</span>`;
+            } else if (ticket.status.includes("Cerrado")) {
+                statusHtml = `<span style="color: white; background-color: #28a745; border-radius: 5px; padding: 5px 10px; font-weight: bold; display: inline-block; text-align: center;">Cerrado</span>`;
+            } else if (ticket.status.includes("En Progreso")) {
+                statusHtml = `<span style="color: white; background-color: #17a2b8; border-radius: 5px; padding: 5px 10px; font-weight: bold; display: inline-block; text-align: center;">En Progreso</span>`;
+            }
+
+            const row = document.createElement("tr");
+            row.innerHTML = `
+                <td>${ticket.id}</td>
+                <td>${ticket.fecha_subida}</td>
+                <td>${ticket.queja}</td>
+                <td>${ticket.priority ? ticket.priority : 'Sin prioridad'}</td>
+                <td>${statusHtml}</td>
+                <td>${ticket.solucion}</td>
+                <td><button class="btn btn-warning btn-sm" type="button" onclick="editarTicket(${ticket.id});">Editar</button><td>
+            `;
+            tableBody.appendChild(row);
+        });
+    })
+    .catch(error => console.error("Error al cargar los tickets:", error));
+    }   
+
+
+    document.addEventListener("DOMContentLoaded", function() {
+        cargarTickets();
+    });
+
+    function limpiarFormulario() {
+        document.getElementById("queja").value = "";
+    }
+
+    document.getElementById("cancelar-btn").addEventListener("click", function() {
+    
+    $('#editar_ticket').modal('hide');
+
+    document.getElementById("frmTicket").reset();
+    }); 
 
 </script>
 
