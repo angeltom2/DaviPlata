@@ -424,7 +424,6 @@
     // Confirmación de SweetAlert2
     Swal.fire({
         title: "¿Estás seguro de modificar la queja?",
-        text: `La nueva queja será: "${queja}"`,
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",

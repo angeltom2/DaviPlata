@@ -47,6 +47,283 @@
 <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
 
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+    $(document).ready(function () {
+        tblTickets = $('#tblTickets').DataTable({
+            "lengthChange": false,
+            "paging": true,
+            "searching": true,
+            "info": true,
+            "ajax": {
+                "url": base_url + "Adminticket/listarTodos",
+                "dataSrc": function (json) {
+                    // Verificar si la respuesta contiene un error
+                    if (json.error) {
+                        console.error("Error en la respuesta JSON:", json.error);
+                        alert("Error en la respuesta JSON: " + json.error);
+                        return [];
+                    } else {
+                        // Ordenar los tickets por prioridad: Alta -> Media -> Baja
+                        json.sort((a, b) => {
+                            const prioridades = { "Alta": 3, "Media": 2, "Baja": 1 };
+                            return prioridades[b.priority] - prioridades[a.priority];
+                        });
+
+                        console.log("Datos recibidos del servidor:", json);
+                        return json;
+                    }
+                },
+                "error": function (xhr, error, thrown) {
+                    console.error("Error en la llamada AJAX:", error, thrown);
+                    console.log("Respuesta del servidor:", xhr.responseText);
+                    alert("Error al cargar los datos. Verifique la consola para más detalles.");
+                }
+            },
+            "columns": [
+                { 'data': 'id' },
+                { 'data': 'fecha_subida' },
+                { 'data': 'queja' },
+                { 'data': 'priority' },
+                {
+                    'data': 'status',
+                    'render': function (data) {
+                        // Definir el estado y color según el contenido de "status"
+                        const estado = data.includes("Abierto") ? 'Abierto' :
+                                       data.includes("Cerrado") ? 'Cerrado' : 'En Progreso';
+                        const color = estado === 'Abierto' ? '#ffc107' : 
+                                      estado === 'Cerrado' ? '#28a745' : '#17a2b8'; // Amarillo, Verde, Azul
+
+                        // Retornar el span con el formato aplicado
+                        return `<span style="color: white; background-color: ${color}; border-radius: 5px; padding: 5px 10px; font-weight: bold; display: inline-block; text-align: center; font-size: 13px;">${estado}</span>`;
+                    }
+                },
+                { 'data': 'solucion' },
+                {
+                    'data': null,
+                    'render': function (data, type, row) {
+                        return `<button class="btn btn-success btn-sm" onclick="SolucionarTicket(${row.id})">Solucionar</button>`;
+                    }
+                }
+            ],
+            "drawCallback": function(settings) {
+                // Aseguramos que los estilos se apliquen después de que la tabla se haya renderizado
+                setTimeout(function() {
+                    $('#tblTickets tbody tr').each(function() {
+                        var row = $(this);
+                        var statusCell = row.find('td').eq(4); // Suponiendo que el status está en la columna 4
+                        if (statusCell.length > 0) {
+                            // Ajusta el color del texto según el status
+                            var statusText = statusCell.text().trim();
+                            if (statusText === 'Abierto') {
+                                statusCell.css("color", "#ffc107");
+                            } else if (statusText === 'Cerrado') {
+                                statusCell.css("color", "#28a745");
+                            } else if (statusText === 'En Progreso') {
+                                statusCell.css("color", "#17a2b8");
+                            }
+                        }
+                    });
+                }, 100); // Retrasa la ejecución 100ms para asegurar que los elementos estén en el DOM
+            }
+        });
+
+        // Botón para recargar la tabla
+        $('#reloadTable').on('click', function () {
+            tblTickets.ajax.reload(null, false);
+        });
+    });
+    });
+
+    function SolucionarTicket(id) {
+    
+    document.getElementById("title").innerHTML = "Solucionar Ticket";
+    const url = base_url + "AdminTicket/solucionar/" + id;
+    const http = new XMLHttpRequest();
+    http.open("GET", url, true);
+    http.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+    http.send();
+    http.onreadystatechange = function () {
+        if (this.readyState == 4) {
+            if (this.status == 200) {
+                // Mostrar la respuesta real que recibimos para depuración
+                console.log("Respuesta del servidor:", this.responseText);
+
+                // Verificar si la respuesta es de tipo JSON
+                const contentType = http.getResponseHeader("Content-Type");
+                if (contentType && contentType.indexOf("application/json") !== -1) {
+                    try {
+                        const res = JSON.parse(this.responseText);
+
+                        // Asignar los valores al formulario del modal
+                        document.getElementById("id_ticket_solucionar").value = res.id;
+                        document.getElementById("queja_solucionar").value = res.queja;  // Campo solo lectura
+                        document.getElementById("solucion").value = '';  // Campo vacío para que el administrador ingrese la solución
+
+                        // Mostrar el modal para solucionar el ticket
+                        $("#solucionar_ticket").modal("show");
+
+                    } catch (error) {
+                        console.error("Error parsing JSON:", error);
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'error',
+                            title: 'La respuesta del servidor no es un JSON válido',
+                            showConfirmButton: false,
+                            timer: 3000
+                        });
+                    }
+                } else {
+                    console.error("La respuesta no es de tipo JSON:", this.responseText);
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'error',
+                        title: 'La respuesta del servidor no es un JSON válido',
+                        showConfirmButton: false,
+                        timer: 3000
+                    });
+                }
+            } else {
+                console.error("Error en la solicitud:", this.status);
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: 'Error en la solicitud del servidor',
+                    showConfirmButton: false,
+                    timer: 3000
+                });
+            }
+        }
+    };
+    }
+
+    function limpiarFormularioTicket() {    
+    // Limpiar solo el campo de solución
+    const solucionField = document.getElementById("solucion");
+    if (solucionField) {
+        solucionField.value = ''; // Limpiar el campo de solución
+    }
+    }   
+
+    document.getElementById("cancelar-btn").addEventListener("click", function() {
+    // Cerrar el modal manualmente
+    $('#solucionar_ticket').modal('hide');
+    });
+
+    function DarSolucion(event) {
+    event.preventDefault();
+
+    const idTicket = document.getElementById("id_ticket_solucionar").value;
+    const solucion = document.getElementById("solucion").value.trim(); // Eliminamos espacios en blanco
+
+    // Validación: que la solución no esté vacía
+    if (solucion === "") {
+        Swal.fire({
+            position: 'center',
+            icon: 'warning',
+            title: 'La solución no puede estar vacía',
+            showConfirmButton: false,
+            timer: 3000
+        });
+        return;
+    }
+
+    // Confirmación de SweetAlert2
+    Swal.fire({
+        title: "¿Estás seguro de solucionar el ticket?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Sí, solucionar",
+        cancelButtonText: "Cancelar",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            const url = base_url + "AdminTicket/solucionarTicket";
+            const data = {
+                id: idTicket,
+                solucion: solucion,
+                status: 'Cerrado' // Actualizamos el estado a cerrado
+            };
+
+            // Usamos Fetch API para enviar la solicitud
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'success',
+                        title: 'Ticket solucionado correctamente',
+                        showConfirmButton: false,
+                        timer: 3000
+                    });
+                    // Cerrar el modal
+                    $('#solucionar_ticket').modal('hide');
+                    // Actualizar la tabla de tickets
+                    actualizarTablaTickets();
+                } else {
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'error',
+                        title: 'Error al solucionar el ticket',
+                        showConfirmButton: false,
+                        timer: 3000
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Error al enviar la solicitud:', error);
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: 'Hubo un error al enviar la solicitud',
+                    showConfirmButton: false,
+                    timer: 3000
+                });
+            });
+        }
+    });
+    }
+
+    function actualizarTablaTickets() {
+    // Hacer una solicitud para obtener los tickets actualizados
+    fetch(base_url + 'AdminTicket/obtenerTickets')
+        .then(response => response.json())
+        .then(tickets => {
+            // Suponiendo que 'tickets' es un array con los tickets actualizados
+            let tabla = document.getElementById('tabla_tickets');
+            tabla.innerHTML = ''; // Limpiar la tabla antes de volver a llenarla
+
+            tickets.forEach(ticket => {
+                // Aquí puedes agregar las filas de los tickets a la tabla
+                let row = tabla.insertRow();
+                row.innerHTML = `
+                    <td>${ticket.id}</td>
+                    <td>${ticket.fecha_subida}</td>
+                    <td>${ticket.queja}</td>
+                    <td>${ticket.status}</td>
+                    <td>${ticket.solucion || 'No solucionado'}</td>
+                    <td>
+                        <!-- Aquí puedes poner los botones o acciones necesarias -->
+                    </td>
+                `;
+            });
+        })
+        .catch(error => console.error('Error al actualizar la tabla de tickets:', error));
+    }
+
+
+</script>
+
 <script>
     $(document).ready(function(){
         $('.dropdown-item').click(function(){
@@ -148,7 +425,6 @@
     import { frmCambiarPass } from '<?php echo base_url; ?>assets/js/funciones.js';    
     window.frmCambiarPass = frmCambiarPass; // Haz que la función sea global
 </script>
-
 
 <script src="<?php echo base_url; ?>assets/js/all.min.js" crossorigin="anonymous"></script>
 
