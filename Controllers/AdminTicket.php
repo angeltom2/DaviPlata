@@ -48,7 +48,6 @@ class AdminTicket extends Controller {
         exit;
     }
 
-    
     public function solucionar(int $id) {
         // Obtener los datos del ticket mediante el modelo TicketManager
         $ticket = $this->model->obtenerDatosTicket($id);
@@ -76,6 +75,7 @@ class AdminTicket extends Controller {
     
         // Verificar si los datos fueron correctamente decodificados
         if ($data === null) {
+            // Captura el error exacto y envíalo como respuesta
             echo json_encode(['success' => false, 'error' => 'JSON mal formado', 'received_data' => file_get_contents('php://input')]);
             return;
         }
@@ -99,6 +99,43 @@ class AdminTicket extends Controller {
             echo json_encode(['success' => false, 'error' => 'Datos incompletos']);
         }
     }
+
+    public function obtenerTickets() {
+        header('Content-Type: application/json');
+    
+        // Llamar al modelo para obtener los tickets
+        $tickets = $this->model->getTickets();
+    
+        if ($tickets) {
+            echo json_encode($tickets);
+        } else {
+            echo json_encode(['success' => false, 'error' => 'No se encontraron tickets']);
+        }
+    }
+
+    public function abrirTicket() {
+        // Obtener el ID del ticket desde la solicitud POST
+        $data = json_decode(file_get_contents("php://input"), true);
+        $idTicket = $data['id'];
+    
+        // Llamar al modelo para actualizar el ticket
+        $estado = "Abierto";
+        $solucion = null; // Borrar la solución
+        
+        // Realizar la actualización del ticket
+        $result = $this->model->abrirTicket($idTicket, $estado, $solucion);
+        
+        // Retornar el resultado
+        if ($result) {
+            echo json_encode(['success' => true]);
+        } else {
+            echo json_encode(['success' => false]);
+        }
+    }
+    
+    
+    
+    
     
     
     
