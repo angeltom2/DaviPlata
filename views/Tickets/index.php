@@ -470,7 +470,6 @@
     });
     }
 
-
     function cargarTickets() {
     const url = base_url + "Tickets/obtenerTickets"; // URL de la función obtenerTickets en el controlador
 
@@ -510,7 +509,6 @@
     .catch(error => console.error("Error al cargar los tickets:", error));
     }   
 
-
     document.addEventListener("DOMContentLoaded", function() {
         cargarTickets();
     });
@@ -527,10 +525,6 @@
     }); 
 
 </script>
-
-
-
-
 
 
 </body>

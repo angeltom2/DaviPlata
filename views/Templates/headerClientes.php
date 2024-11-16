@@ -314,7 +314,7 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="#about">Reseña</a></li>
+                    <li class="nav-item"><a class="nav-link" href="Reseña">Reseña</a></li>
                     <li class="nav-item"><a class="nav-link" href="#services">Servicios</a></li>
                     <li class="nav-item"><a class="nav-link" href="#benefits">Beneficios</a></li>
                     <li class="nav-item"><a class="nav-link" href="Tickets">Tickets</a></li>
