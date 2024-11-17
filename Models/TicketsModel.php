@@ -42,34 +42,34 @@ class TicketsModel extends Query {
         $stmt->execute();
     }
 
-    public function getTickets() {
+    public function getTicketsCliente() {
         // Verificar si la variable de sesión 'dni_cliente' está definida
         if (!isset($_SESSION['dni_cliente'])) {
-            // Si no está definida, puedes devolver un error o manejarlo como desees
             error_log("Error: 'dni_cliente' no está definida en la sesión.");
-            return [];  // O bien, puedes devolver un mensaje de error
+            return [];  // Si no está definida la sesión
         }
     
         // Obtener el DNI del cliente desde la sesión
-        $dniCliente = $_SESSION['dni_cliente'];  // Asegúrate de que esta variable esté correctamente definida
-        
+        $dniCliente = $_SESSION['dni_cliente'];
+    
         // Consulta SQL para obtener los tickets filtrados por el DNI del cliente
         $sql = "SELECT t.id, t.fecha_subida, t.queja, t.priority, t.status, t.dni_cliente, t.solucion 
                 FROM tickets t 
-                WHERE t.dni_cliente = :dni_cliente";  // Filtrar por DNI
-    
-        // Ejecutar la consulta con el parámetro del DNI
+                WHERE t.dni_cliente = :dni_cliente";
+        
         $params = ['dni_cliente' => $dniCliente];
-        $data = $this->selectALL($sql, $params);  // Usar el método selectALL con parámetros
+        $data = $this->selectALL($sql, $params);
     
-        // Comprobar si se obtuvieron resultados
+        // Verificar si se obtienen datos
         if ($data) {
-            return $data;  // Retorna los resultados como un array
+            error_log("Datos de tickets obtenidos: " . print_r($data, true));  // Log para depuración
+            return $data;
         } else {
-            return [];  // Retorna un array vacío si no hay resultados
+            error_log("No se encontraron tickets para el cliente: " . $dniCliente);
+            return [];  // Si no hay tickets
         }
     }
-
+    
     public function obtenerTicketPorId(int $id) {
         $sql = "SELECT id, queja FROM tickets WHERE id = ?";
         $data = $this->select($sql, [$id]);

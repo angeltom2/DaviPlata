@@ -102,7 +102,7 @@ class Tickets extends Controller {
 
     public function listar() {
         // Obtener los tickets desde el modelo
-        $data = $this->model->getTickets(); 
+        $data = $this->model->getTicketsCliente(); 
         
         error_log(print_r($data, true));  // Para depurar y ver los datos
         
