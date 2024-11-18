@@ -90,7 +90,6 @@ class Usuarios extends Controller {
         die(); 
     }
     
-    
     public function registrar() {
         header('Content-Type: application/json');
     

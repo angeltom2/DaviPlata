@@ -323,7 +323,9 @@
                             <i class="fas fa-user"></i>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="">Cambiar Contraseña</a></li>
+                            
+                            <button class="dropdown-item" type="button" onclick="abrirModal()">Cambiar Contraseña</button>
+
                             <li><a class="dropdown-item" href="http://localhost/daviplata/">Cerrar Sesión</a></li>
                         </ul>
                     </li>

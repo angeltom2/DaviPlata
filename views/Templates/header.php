@@ -137,6 +137,10 @@
                             <div class="sb-nav-link-icon"><i class="fas fa-ticket-alt" style="color:white;"></i></div>
                             <span style="font-weight: bold; color:white;">Tickets</span>
                         </a>
+                        <a class="nav-link" href="<?php echo base_url; ?>AdminReseña">
+                            <div class="sb-nav-link-icon"><i class="fas fa-star" style="color:white;"></i></div>
+                            <span style="font-weight: bold; color:white;">Reseñas</span>
+                        </a>
                     </div>
                 </div>
                 <div class="sb-sidenav-footer">

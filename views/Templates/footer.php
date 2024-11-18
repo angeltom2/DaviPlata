@@ -139,6 +139,53 @@
     });
     });
 
+    $(document).ready(function () {
+                tblReseñas = $('#tblReseñas').DataTable({
+                    "lengthChange": false,   // Desactiva "Show entries"
+                    "paging": true,          // Habilita la paginación
+                    "searching": true,       // Habilita la búsqueda
+                    "info": true,            // Muestra la información (total de registros)
+                    "ajax": {
+                        "url": base_url + "AdminReseña/listarReseñas",  // URL para obtener las reseñas
+                        "dataSrc": function (json) {
+                            console.log("Datos recibidos del servidor:", json); // Verifica los datos recibidos
+                            return json; // Retorna los datos sin modificar
+                        }
+                    },
+                    "columns": [
+                        { 'data': 'id' },                // ID de la reseña
+                        { 'data': 'Fecha_subida' },      // Fecha en que se subió la reseña
+                        { 'data': 'Comentario' },        // Comentario de la reseña
+                        {
+                            'data': 'Calificacion',      // Calificación de la reseña
+                            'render': function (data) {
+                                // Renderizar la calificación con colores y etiquetas
+                                let calificacionHtml;
+                                if (data >= 4) {
+                                    calificacionHtml = `<span style="color: white; background-color: #28a745; border-radius: 5px; padding: 5px 10px; font-weight: bold; display: inline-block; text-align: center;">Excelente</span>`;
+                                } else if (data >= 3) {
+                                    calificacionHtml = `<span style="color: white; background-color: #ffc107; border-radius: 5px; padding: 5px 10px; font-weight: bold; display: inline-block; text-align: center;">Bueno</span>`;
+                                } else {
+                                    calificacionHtml = `<span style="color: white; background-color: #dc3545; border-radius: 5px; padding: 5px 10px; font-weight: bold; display: inline-block; text-align: center;">Malo</span>`;
+                                }
+                                return calificacionHtml;  // Devuelve el HTML de la calificación
+                            }
+                        },
+                        {
+                            'data': 'DNI',               // DNI asociado a la reseña
+                            'render': function (data) {
+                                return `<span>${data}</span>`;
+                            }
+                        }
+                    ]
+                });
+
+                // Recargar la tabla
+                $('#reloadTable').on('click', function () {
+                    tblReseñas.ajax.reload(null, false); 
+                });
+    });
+
     function SolucionarTicket(id) {
     document.getElementById("title").innerHTML = "Solucionar Ticket";
     const url = base_url + "AdminTicket/solucionar/" + id;
@@ -404,6 +451,11 @@
         }
     });
     }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
 
 </script>
 
