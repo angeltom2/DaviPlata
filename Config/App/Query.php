@@ -68,6 +68,20 @@ class Query extends conexion {
         
         return $data ? 1 : 0; // Retornar 1 si fue exitoso, 0 si falló
     }
+
+    public function delete(string $sql, array $datos) {
+        $this->sql = $sql;
+        $this->datos = $datos;
+        
+        // Preparamos la consulta de eliminación
+        $delete = $this->con->prepare($this->sql);
+        
+        // Ejecutamos la consulta de eliminación
+        $data = $delete->execute($this->datos);
+        
+        return $data ? 1 : 0; // Retornar 1 si fue exitoso, 0 si falló
+    }
+
 }
 
 ?>

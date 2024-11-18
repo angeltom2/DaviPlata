@@ -62,52 +62,79 @@ class reseña extends Controller {
     }
     
     public function listarReseñas() {
-        // Establecer el encabezado de respuesta para JSON
-        header('Content-Type: application/json');
-        
-        // Obtener las reseñas del cliente desde el modelo
+        // Obtener las reseñas desde el modelo
         $data = $this->model->getReseñasCliente();
-
-        // Verificar si los datos son válidos y es un array
-        if ($data && is_array($data)) {
-            // Procesar los datos para asegurarse de que estén en el formato adecuado para DataTables
-            $response = array_map(function($item) {
-                // Agregar la columna de "acciones"
-                $item['acciones'] = '<div> 
-                    <button class="btn btn-warning btn-sm" type="button" onclick="editarReseña(' . $item['id'] . ');">Editar</button>
-                    <button class="btn btn-danger btn-sm" type="button" onclick="eliminarReseña(' . $item['id'] . ');">Eliminar</button>
-                </div>';
+        
+        // Procesar los datos para agregar las acciones
+        for ($i = 0; $i < count($data); $i++) {
+            // Generar las acciones con estructura HTML válida
+            $data[$i]['acciones'] = '<div> 
+                <button class="btn btn-warning btn-sm" onclick="editarReseña(' . $data[$i]['id'] . ')">Editar</button>
+                <button class="btn btn-danger btn-sm" onclick="eliminarReseña(' . $data[$i]['id'] . ')">Eliminar</button>
+            </div>';
+        }
+    
+        // Devolver los datos en formato JSON limpio
+        echo json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+        die();
+    }
+    
+    public function editarResena(int $id) {
+        // Obtener los datos de la reseña, incluyendo el DNI
+        $data = $this->model->obtenerResenaPorId($id);
+    
+        // Si no existe la reseña, devolver un error en formato JSON
+        if (!$data) {
+            echo json_encode(["error" => "No existe reseña con ese ID"], JSON_UNESCAPED_UNICODE);
+        } else {
+            echo json_encode($data, JSON_UNESCAPED_UNICODE); // Ahora incluye DNI en los datos
+        }
+        die();
+    }
+    
+    public function modificar() {
+        $id = $_POST['id'];
+        $comentario = $_POST['comentario'];
+        $calificacion = $_POST['calificacion'];        
+        if (!empty($id) && !empty($comentario) && !empty($calificacion)) {
+            // Llamamos al modelo para actualizar la reseña
+            $result = $this->model->actualizarResena($comentario, $calificacion, $id);
             
-                // Devolver los campos con la columna de acciones incluida
-                return [
-                    'id' => $item['id'],
-                    'fecha_subida' => $item['fecha_subida'],
-                    'comentario' => $item['comentario'],
-                    'calificacion' => $item['calificacion'],
-                    'dni' => $item['dni'],
-                    'acciones' => $item['acciones']
-                ];
-            }, $data);
-
-            // Log para depuración: imprimir la respuesta que se va a enviar
-            $json_response = json_encode(['data' => $response], JSON_UNESCAPED_UNICODE);
-            error_log("Respuesta JSON: " . $json_response);  // Para depuración
-
-            // Verificar si la respuesta JSON es válida antes de enviarla
-            if (json_last_error() !== JSON_ERROR_NONE) {
-                error_log("Error en la codificación JSON: " . json_last_error_msg());
-                echo json_encode(['data' => []]);  // Respuesta vacía si hay error en JSON
+            if ($result) {
+                echo "modificado";
             } else {
-                // Devolver los datos procesados en formato JSON bajo la clave 'data' para DataTables
-                echo $json_response;
+                echo "error";
             }
         } else {
-            // Si no hay datos, devolver una respuesta vacía bajo la clave 'data'
-            echo json_encode(['data' => []]); // Respuesta vacía si no hay datos
+            echo "error";
         }
-
-        die();  // Terminar la ejecución del script
+        die();
     }
+    
+    public function eliminar() {
+        if (isset($_POST['id']) && !empty($_POST['id'])) {
+            $id = $_POST['id'];
+            
+            // Llamamos al modelo para eliminar la reseña
+            $result = $this->model->eliminarResena($id);
+            
+            if ($result) {
+                echo "eliminado";
+            } else {
+                echo "error";
+            }
+        } else {
+            echo "error";
+        }
+        die();
+    }
+    
+    
+    
+    
+    
+    
+    
     
 }
 ?>
