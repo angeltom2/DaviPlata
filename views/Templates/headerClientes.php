@@ -301,6 +301,95 @@
     .app-download a:hover {
         transform: scale(1.1); /* Aumenta ligeramente el tamaño al pasar el mouse */    
     }   
+
+    /* Estilos para mantener el chatbot fijo */
+    .chatbot-container {
+            position: fixed;
+            bottom: 20px; /* Distancia desde la parte inferior */
+            right: 20px; /* Distancia desde la parte derecha */
+            width: 300px; /* Ancho del chatbot */
+            height: 400px; /* Alto del chatbot */
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
+            border-radius: 10px; /* Bordes redondeados */
+            z-index: 1000; /* Asegura que el chatbot esté por encima de otros elementos */
+            display: none; /* Inicialmente oculto */
+            flex-direction: column;
+            padding: 15px;
+        }
+
+        .chatbot-header {
+            background-color: #4e000b; /* Fondo de la cabecera */
+            color: white; /* Color del texto */
+            padding: 10px;
+            text-align: center;
+            border-radius: 10px;
+        }
+
+        .chatbot-body {
+            flex-grow: 1;
+            overflow-y: auto; /* Habilita desplazamiento vertical */
+            padding: 10px;
+        }
+
+        .chatbot-footer {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+
+        .chatbot-footer button {
+            background-color: #4e000b;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .chatbot-footer button:hover {
+            background-color: #6c000f;
+        }
+
+        .chatbot-body p {
+            margin: 0;
+            padding: 5px;
+            background-color: #f2f2f2;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        .chatbot-icon {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 80px; /* Aumentado el tamaño del contenedor */
+            height: 80px;
+            background-color: #ffffff; /* Fondo blanco */
+            color: #4e000b; /* Color de ícono */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* Sombra más detallada */
+            cursor: pointer;
+            z-index: 1000;
+            transition: transform 0.3s ease, box-shadow 0.3s ease; /* Efecto suave al pasar el cursor */
+        }
+
+        .chatbot-icon:hover {
+            transform: scale(1.1); /* Aumenta ligeramente el tamaño al pasar el cursor */
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4); /* Sombra más intensa */
+        }
+
+        .chatbot-logo {
+            width: 60px; /* Aumentado el tamaño del logo */
+            height: 60px;
+            border-radius: 50%; /* Hace el logo circular */
+            object-fit: cover; /* Asegura que la imagen se ajuste bien */
+        }
+
+
 </style>
 
 </head>
@@ -384,7 +473,28 @@
     </div>
 </header>
 
-    <!-- Services Section -->
+
+<div class="chatbot-icon" onclick="toggleChatbot()">
+    <img src="assets/img/chatbot.png" alt="Chatbot Logo" class="chatbot-logo"><i class="bi bi-chat"></i> 
+    </div>
+
+    <!-- Contenedor del chatbot -->
+    <div class="chatbot-container" id="chatbotContainer">
+        <div class="chatbot-header">
+            <strong>Chatbot</strong>
+        </div>
+        <div class="chatbot-body" id="chatbotBody">
+            <p></p>
+        </div>
+        <div class="chatbot-footer">
+            <input type="text" id="userInput" class="form-control" placeholder="Escribe tu mensaje..." />
+            <button onclick="sendMessage()">Enviar</button>
+            <button onclick="closeChatbot()">Cerrar</button>
+        </div>
+    </div>
+
+   
+
 <section id="services" class="services-section">  
     <div class="container px-4 px-lg-5">
         <h2 class="text-center">Servicios que Ofrecemos</h2>
