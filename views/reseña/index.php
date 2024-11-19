@@ -11,13 +11,77 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet" />
+    
     <style>
+        .btn-send, .btn-clean {
+            padding: 6px 12px; /* Botones más pequeños */
+            font-size: 14px;
+            font-weight: bold;
+            border-radius: 25px; /* Botones redondeados */
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin: 5px; /* Espaciado entre los botones */
+        }
+
+        /* Estilo para el botón "Enviar Reseña" */
+        .btn-send {
+            background-color: #0d6efd;
+            color: white;
+            border: none;
+        }
+
+        .btn-send:hover {
+            background-color: #0b5ed7;
+            transform: scale(1.1);
+            box-shadow: 0 5px 15px rgba(13, 110, 253, 0.4);
+        }
+
+        .btn-send:active {
+            transform: scale(1);
+            box-shadow: none;
+        }
+
+        /* Estilo para el botón "Limpiar" */
+        .btn-clean {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 6px 12px; /* Botones más pequeños */
+        }
+
+        .btn-clean i {
+            margin-right: 5px;
+        }
+
+        .btn-clean:hover {
+            background-color: #c82333;
+            transform: scale(1.1);
+            box-shadow: 0 5px 15px rgba(220, 53, 69, 0.4);
+        }
+
+        .btn-clean:active {
+            transform: scale(1);
+            box-shadow: none;
+        }
+
+        /* Contenedor de los botones */
+        .button-container {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
         /* General Styles */
         body {
             margin: 0;
             font-family: Arial, sans-serif;
             background-color: #f8f9fa;
         }
+
         main {
             flex: 1;
         }
@@ -32,7 +96,7 @@
 
         .sidebar h2 {
             text-align: center;
-            color: #0d6efd;
+            color: #800000; /* Rojo oscuro */
             padding: 1rem 0;
             border-bottom: 1px solid #ddd;
         }
@@ -56,7 +120,7 @@
         }
 
         .sidebar ul li:hover {
-            background-color: #0d6efd;
+            background-color: #800000;
         }
 
         .sidebar ul li:hover a {
@@ -80,125 +144,225 @@
             color: #333;
         }
 
+        /* Form Container */
         .form-container {
             background-color: #ffffff;
             border-radius: 8px;
-            padding: 15px;
+            padding: 25px;
             box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
+        .form-container h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 1.6rem;
+        }
+
+        /* Textarea and Input Styles */
         .form-container textarea,
         .form-container input {
             width: 100%;
-            padding: 10px;
-            margin-bottom: 10px;
+            padding: 12px;
+            margin-bottom: 15px;
             border: 1px solid #ddd;
-            border-radius: 5px;
+            border-radius: 8px;
+            font-size: 1rem;
+            background-color: #f7f7f7;
+            box-sizing: border-box;
+        }
+
+        .form-container textarea {
+            height: 150px;
+            resize: none;
+        }
+
+        .form-container input[type="text"] {
+            font-size: 1.1rem;
         }
 
         .form-container button {
-            padding: 10px 20px;
+            padding: 12px 20px;
             border: none;
             border-radius: 5px;
             background-color: #0d6efd;
-            color: #fff;
-            font-size: 1rem;
+            color: white;
+            font-size: 1.1rem;
             cursor: pointer;
+            width: 100%;
         }
 
         .form-container button:hover {
             background-color: #0b5ed7;
         }
 
+        /* Star Rating Styles */
         .stars {
-            display: flex;
-            gap: 5px;
-            margin-bottom: 10px;
-            cursor: pointer;
+        display: flex;
+        gap: 12px; /* Aumenta el espaciado entre las estrellas */
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border-radius: 50%; /* Redondea los bordes del contenedor */
+        padding: 6px; /* Ajusta el espaciado dentro del contenedor */
+        background-color: #f7f7f7; /* Fondo suave para el contenedor */
+        height: 60px; /* Tamaño fijo para hacer el contenedor más pequeño */
+        align-items: center; /* Alinea las estrellas verticalmente */
         }
 
+        /* Estilo de las Estrellas */
         .stars span {
-            font-size: 2rem;
+            font-size: 2rem; /* Tamaño de las estrellas reducido */
             color: #ddd;
+            transition: transform 0.3s ease, color 0.3s ease;
+            border-radius: 50%; /* Estrellas redondas */
+            padding: 6px; /* Reducción del padding para hacer las estrellas más pequeñas */
+            background-color: #fff;
         }
 
+        /* Cuando una estrella está activa (seleccionada) */
         .stars span.active {
             color: #ffc107;
+            transform: scale(1.2); /* Aumenta ligeramente el tamaño de la estrella cuando está activa */
         }
 
+        /* Efecto al pasar el mouse sobre una estrella */
+        .stars span:hover {
+            color: #f39c12;
+            transform: scale(1.3); /* Las estrellas se agrandan un poco al hacer hover */
+        }
+
+        /* Efecto al pasar el mouse sobre las estrellas */
+        .stars span:hover ~ span {
+            color: #ddd; /* Restablece el color de las estrellas a gris si no están seleccionadas */
+        }
+
+        /* Descripción de las estrellas */
         .rating-description {
-            font-size: 1rem;
+            font-size: 1.1rem;
             font-weight: bold;
             color: #555;
-            margin-bottom: 10px;
+            text-align: center;
+            margin-top: 10px;
         }
+
+        /* Ajustes cuando las estrellas se están seleccionando (animación de hover) */
+        .stars span:hover {
+            color: #f39c12;
+            transform: scale(1.3); /* Animación de agrandado en hover */
+            transition: transform 0.3s ease, color 0.3s ease;
+        }
+
+        .stars span:active {
+            transform: scale(1.1); /* Efecto al hacer clic en la estrella */
+            transition: transform 0.1s ease;
+        }
+        /* DNI Container */
         .dni-container {
-             margin-top: 10px;
+            margin-top: 20px;
         }
 
         .dni-container label {
-            display: block;
-            margin-bottom: 5px;
             font-weight: bold;
+            color: #333;
+            display: block;
+            margin-bottom: 8px;
+            font-size: 1.1rem;
         }
 
         .dni-container input {
             width: 100%;
-            padding: 8px;
-            font-size: 16px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
+            padding: 12px;
+            font-size: 1.1rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #f7f7f7;
         }
 
-         
+        /* Clean Button */
         .btn-clean {
-            background-color: #dc3545 !important; /* Fondo rojo */
-            border: 1px solid #dc3545 !important; /* Borde rojo */
-            color: white !important; /* Texto blanco */
-            font-size: 16px; /* Tamaño de texto */
-            padding: 8px 16px; /* Espaciado interior */
-            border-radius: 4px; /* Bordes redondeados */
+            background-color: #dc3545 !important;
+            border: 1px solid #dc3545 !important;
+            color: white !important;
+            font-size: 16px;
+            padding: 10px 20px;
+            border-radius: 8px;
             display: inline-flex;
-            align-items: center; /* Centra los iconos y el texto */
-            justify-content: center; /* Centra los iconos y el texto */
-            transition: background-color 0.3s, border-color 0.3s, color 0.3s; /* Transición suave */
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s, border-color 0.3s, color 0.3s;
         }
 
-        /* Estilo para el icono */
         .btn-clean i {
-            margin-right: 8px; /* Espacio entre el icono y el texto */
+            margin-right: 8px;
         }
 
-        /* Efecto al pasar el mouse por encima */
         .btn-clean:hover {
-            background-color: #c82333 !important; /* Fondo rojo más oscuro al pasar el ratón */
-            border-color: #c82333 !important; /* Borde rojo más oscuro */
-            color: white !important; /* Texto blanco */
+            background-color: #c82333 !important;
+            border-color: #c82333 !important;
         }
 
-        /* Estilo para el enfoque (focus) */
         .btn-clean:focus {
-            outline: none; /* Elimina el contorno por defecto */
-            box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.25); /* Sombra de enfoque roja */
+            outline: none;
+            box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.25);
         }
 
-        /* Estilo para el estado activo (cuando se hace clic en el botón) */
         .btn-clean:active {
-            background-color: #bd2130 !important; /* Fondo rojo más intenso al hacer clic */
-            border-color: #bd2130 !important; /* Borde rojo más intenso al hacer clic */
-            color: white !important; /* Texto blanco al hacer clic */
+            background-color: #bd2130 !important;
+            border-color: #bd2130 !important;
         }
 
-
-
+        /* Footer */
         footer {
             background-color: #0d6efd;
             color: white;
             text-align: center;
             padding: 10px 0;
-            margin-top: 188px;
+            margin-top: 50px;
+        }
+
+        /* Table */
+        .table {
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            margin-top: 30px;
+            background-color: #ffffff;
+        }
+
+        .table th {
+            background-color: #800000;
+            color: white;
+            font-weight: bold;
+            padding: 18px;
+            text-align: center;
+            letter-spacing: 1px;
+            font-size: 16px;
+            border-top-left-radius: 12px;
+            border-top-right-radius: 12px;
+        }
+
+        .table td {
+            padding: 18px;
+            text-align: center;
+            font-size: 15px;
+            color: #333;
+        }
+
+        .table tbody tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        .table tbody tr:hover {
+            background-color: #e0e0e0;
         }
     </style>
+
 </head>
 
 <body>
@@ -255,9 +419,9 @@
             <div class="rating-description" id="ratingDescription">
                 Selecciona una calificación
             </div>
+        
     
-    
-            <button onclick="registrarReseña()">Enviar Reseña</button>
+            <button class="btn-send" onclick="registrarReseña()">Enviar Reseña</button>
             <button class="btn btn-clean" onclick="clearMessage()"><i class="fas fa-trash-alt"></i> Limpiar</button>
     </div>
 
@@ -304,9 +468,7 @@
 
     </div>
     
-    <footer>
-        © 2024 Servicios Financieros - Todos los Derechos Reservados
-    </footer>
+   
     
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>

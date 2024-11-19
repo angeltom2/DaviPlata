@@ -16,92 +16,230 @@
 
 
 <style>
-        /* Estilos generales */
-        body {
-            font-family: 'Varela Round', sans-serif;
-            background-color: #f8f9fa;
-        }
+    /* Estilos generales */
+    body {
+        font-family: 'Varela Round', sans-serif;
+        background-color: #f8f9fa;
+        margin: 0;
+    }
 
-        .sidebar {
-            background-color: #ffffff;
-            padding: 20px;
-            border-right: 1px solid #ddd;
-            height: 100vh;
-        }
+    .sidebar {
+        background-color: #ffffff;
+        padding: 10px;
+        border-right: 1px solid #ddd;
+        height: 100vh;
+        width: 238px; /* Ajusta el valor según el ancho que necesites */
+    }
 
-        .profile-info {
-            text-align: center;
-            margin-bottom: 20px;
-        }
 
-        .profile-info img {
-            width: 80px;
-            border-radius: 50%;
-        }
+    .profile-info {
+        text-align: center;
+        margin-bottom: 20px;
+    }
 
-        .menu-item {
-            font-size: 1em;
-            padding: 10px;
-            color: #555;
-            display: block;
-            text-decoration: none;
-            transition: 0.3s;
-        }
+    .profile-info img {
+        width: 150px;
+        border-radius: 80%;
+    }
 
-        .menu-item:hover,
-        .menu-item.active {
-            background-color: #007bff;
-            color: white;
-            border-radius: 5px;
-        }
+    .menu-item {
+        font-size: 1em;
+        padding: 5px;
+        color: #555;
+        display: block;
+        text-decoration: none;
+        transition: 0.3s;
+    }
 
-        .content {
-            padding: 20px;
-            width: 100%;
-        }
+    .menu-item:hover,
+    .menu-item.active {
+        background-color: #800000;
+        color: white;
+        border-radius: 5px;
+    }
 
-        .table-container {
-            background-color: #ffffff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
+    .content {
+        padding: 20px;
+        width: 81%;
+        margin-left: 40px; /* Espacio para el sidebar */
+    }
 
-        .footer {
-            background-color: #007bff;
-            color: white;
-            text-align: center;
-            padding: 10px;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-        }
+    .header {
+        background-color: #ffffff;
+        padding: 15px;
+        margin-bottom: 20px;
+        box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    }
 
-        .message-box {
-            margin-top: 20px;
-            padding: 20px;
-            background-color: #ffffff;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
+    .header h1 {
+        font-size: 1.5rem;
+        color: #333;
+    }
 
-        .message-box textarea {
-            width: 100%;
-            height: 100px;
-            resize: none;
-        }
+    .table-container {
+        background-color: #ffffff;
+        padding: 5px;
+        border-radius: 3px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin-top: 1px;
+    }
 
-        .btn-clean {
-            background-color: #dc3545;
-            color: white;
-            border: none;
-            transition: background-color 0.3s;
-        }
+    .table {
+        width: 80%;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+        margin-top: 10px;
+        background-color: #ffffff;
+    }
 
-        .btn-clean:hover {
-            background-color: #c82333;
-        }
+    .table th {
+        background-color: #800000;
+        color: white;
+        font-weight: bold;
+        padding: 18px;
+        text-align: center;
+        letter-spacing: 1px;
+        font-size: 16px;
+        border-top-left-radius: 12px;
+        border-top-right-radius: 12px;
+    }
+
+    .table td {
+        padding: 18px;
+        text-align: center;
+        font-size: 15px;
+        color: #333;
+    }
+
+    .table tbody tr:nth-child(even) {
+        background-color: #f8f9fa;
+    }
+
+    .table tbody tr:hover {
+        background-color: #e0e0e0;
+    }
+
+    /* Estilos para el formulario de Crear Ticket */
+    .message-box {
+        margin-top: 20px;
+        padding: 25px;
+        background-color: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .message-box h5 {
+        font-size: 1.25rem;
+        color: #333;
+        margin-bottom: 15px;
+    }
+
+    .message-box textarea {
+        width: 100%;
+        height: 150px; /* Aumento el alto */
+        resize: none;
+        padding: 14px;
+        font-size: 1.1rem;
+        border-radius: 8px;
+        border: 1px solid #ddd;
+        background-color: #f7f7f7;
+        margin-bottom: 20px;
+        transition: all 0.3s ease;
+    }
+
+    .message-box textarea:focus {
+        border-color: #0d6efd;
+        background-color: #ffffff;
+        box-shadow: 0 0 5px rgba(13, 110, 253, 0.3);
+    }
+
+    .message-box input {
+        width: 100%;
+        padding: 12px;
+        font-size: 1.1rem;
+        border-radius: 8px;
+        border: 1px solid #ddd;
+        background-color: #f7f7f7;
+        margin-top: 12px;
+        transition: all 0.3s ease;
+    }
+
+    .message-box input:focus {
+        border-color: #0d6efd;
+        background-color: #ffffff;
+        box-shadow: 0 0 5px rgba(13, 110, 253, 0.3);
+    }
+
+    .button-container {
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+        margin-top: 20px;
+    }
+
+    .btn-send,
+    .btn-clean {
+        padding: 14px 24px; /* Tamaño de los botones */
+        font-size: 16px; /* Tamaño de la fuente */
+        font-weight: bold;
+        border-radius: 25px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin: 5px;
+        border: none;
+    }
+
+    .btn-send {
+        background-color: #0d6efd;
+        color: white;
+    }
+
+    .btn-send:hover {
+        background-color: #0b5ed7;
+        transform: scale(1.05);
+        box-shadow: 0 5px 15px rgba(13, 110, 253, 0.4);
+    }
+
+    .btn-send:active {
+        transform: scale(1);
+        box-shadow: none;
+    }
+
+    .btn-clean {
+        background-color: #dc3545;
+        color: white;
+    }
+
+    .btn-clean:hover {
+        background-color: #c82333;
+        transform: scale(1.05);
+        box-shadow: 0 5px 15px rgba(220, 53, 69, 0.4);
+    }
+
+    .btn-clean:active {
+        transform: scale(1);
+        box-shadow: none;
+    }
+
+    /* Estilos de footer */
+    .footer {
+        background-color: #007bff;
+        color: white;
+        text-align: center;
+        padding: 10px;
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+    }
 </style>
+
 
 </head>
 
@@ -111,7 +249,7 @@
         <!-- Sidebar -->
         <div class="sidebar col-md-3">
             <div class="profile-info">
-                <img src="assets/img/person2.png" alt="Profile Picture">
+                <img src="assets/img/Usuario Anonimo.png" alt="Profile Picture">
             </div>
             <a href="http://localhost/daviplata/VistaClientes" class="menu-item">Regresar</a>
             <a href="#" class="menu-item">Mis Tickets <span class="badge bg-primary"></span></a>
@@ -119,27 +257,25 @@
 
         <!-- Contenido Principal -->
         <div class="content col-md-9">
+            <div class="table-container">
             <h2 class="mb-4">Mis Tickets</h2>
-
-            <!-- Tabla de Tickets -->
-<div class="table-container">
-    <table id="tblTickets" class="table table-striped">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Fecha Subida</th>
-                <th>Queja</th>
-                <th>Prioridad</th>
-                <th>Status</th>
-                <th>Solución</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-        </tbody>
-    </table>
-</div>
-
+                <table id="tblTickets" class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Fecha Subida</th>
+                            <th>Queja</th>
+                            <th>Prioridad</th>
+                            <th>Status</th>
+                            <th>Solución</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+            
 <div id="editar_ticket" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title">
   <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 600px;">
     <div class="modal-content" style="border-radius: 12px; box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);">
@@ -169,23 +305,20 @@
             <!-- Crear Ticket -->
             <div class="message-box mt-4">
                 <h5>Crear Tickets</h5>
-                <textarea id="ticketMessage" placeholder="Escribe tu mensaje aquí..."></textarea>
+                <textarea id="ticketMessage" placeholder="Escriba su queja aca....."></textarea>
 
                 <input type="text" id="dni" placeholder="Ingresa tu DNI" class="mt-2">
 
                 <div class="mt-2">
                     <!-- Botones para enviar o limpiar el ticket -->
-                    <button class="btn btn-primary" onclick="registrarTicket()">Enviar Ticket</button>
+                    <button class="btn btn-send" onclick="registrarTicket()">Enviar Ticket</button>
                     <button class="btn btn-clean" onclick="clearMessage()"><i class="fas fa-trash-alt"></i> Limpiar</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Footer -->
-    <div class="footer">
-        &copy; 2024 Ticket Management System - All Rights Reserved
-    </div>
+    
 
     <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" crossorigin="anonymous"></script>
