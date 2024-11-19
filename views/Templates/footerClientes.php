@@ -164,6 +164,7 @@
     $('#cambiarPass').modal('show');
     }
 
+
     function toggleChatbot() {
         var chatbot = document.getElementById('chatbotContainer');
         if (chatbot.style.display === "none" || chatbot.style.display === "") {
@@ -201,25 +202,80 @@
         "Salir": {
             "message": "¡Gracias por usar Daviplata! Si necesitas ayuda nuevamente, no dudes en contactarnos."
         },
+        "¿Qué tipos de interés tendrá mi crédito?": {
+            "message": "Los tipos de interés para tu crédito pueden variar entre el 12% y el 18% anual, dependiendo del monto solicitado y tu perfil crediticio. ¿Te gustaría hacer otra consulta?"
+        },
+        "¿Cuánto dinero me pueden prestar?": {
+            "message": "Podemos prestarte hasta $1,000,000 dependiendo de tu perfil crediticio.¿Te gustaría hacer otra consulta?"
+        },
+        "¿Qué comisiones me cobrarán?": {
+            "message": "Las comisiones varían según el tipo de transacción. Por ejemplo, transferencias nacionales tienen una comisión de $5,000, mientras que las internacionales pueden tener una comisión de hasta $50,000. ¿Te gustaría hacer otra consulta?"
+        },
         "default": {
             "message": "Lo siento, no entendí esa pregunta. Si necesitas ayuda, puedes generar un ticket haciendo clic en el siguiente enlace: <a href='http://localhost/daviplata/Tickets' target='_blank'>Generar ticket</a>"
-        }
+        },
+        "¿Dónde se encuentran ubicados los centros financieros del banco?": {
+            "message": "Los centros financieros del banco se encuentran en las principales ciudades del país. Puedes consultar la lista completa y sus direcciones en nuestro sitio web oficial. ¿Te gustaría hacer otra consulta?"
+        },
+        "¿Cuál es la diferencia entre las cuentas de cheques y las de ahorros?": {
+            "message": "La principal diferencia es que las cuentas de cheques se utilizan para transacciones frecuentes, como pagos y retiros, mientras que las cuentas de ahorros están diseñadas para guardar dinero a largo plazo y generar intereses. ¿Te gustaría hacer otra consulta?"
+        },
+        "¿Qué tipos de cuentas ofrecen?": {
+            "message": "Ofrecemos varios tipos de cuentas, como cuentas corrientes, cuentas de ahorro, y cuentas a plazo fijo. Cada tipo tiene características y beneficios diferentes. ¿Te gustaría saber más sobre algún tipo de cuenta en particular?"
+        },
+        "¿Qué tipos de tarjetas ofrecen?": {
+            "message": "Ofrecemos varios tipos de tarjetas, como tarjetas de débito, crédito y prepagadas. Cada tipo tiene características y beneficios diferentes. ¿Te gustaría saber más sobre algún tipo de tarjeta en particular?"
+        },
+        "¿Cómo solicito una tarjeta?": {
+            "message": "Para solicitar una tarjeta, primero debes elegir el tipo de tarjeta que deseas ,Luego  te guiaremos en el proceso de solicitud. ¿Quiere solicitar una tarjeta?"
+        },
+        "¿Cómo puedo comunicarme con el banco?": {
+            "message": "Puedes comunicarte con nosotros a través de varios canales: por teléfono, correo electrónico, o visitando una de nuestras sucursales. ¿Te gustaría saber más sobre alguno de estos métodos?"
+        },
+        "¿Cuáles son los requisitos para solicitar un crédito?": {
+            "message": "Para solicitar un crédito, necesitas cumplir con ciertos requisitos. ¿Te gustaría saber más sobre los requisitos específicos para solicitar un crédito?"
+        },
+
+        "¿Cómo puedo calcular una cuota?": {
+            "message": "Para calcular la cuota de un crédito, se considera el monto prestado, la tasa de interés y el plazo de pago. ¿Te gustaría que te ayudemos a calcularla?"
+        },
+
+        "¿Qué pasa si no puedo pagar una cuota?": {
+            "message": "Si no puedes pagar una cuota, es importante que te pongas en contacto con el banco lo antes posible. Dependiendo del tipo de crédito, el banco podría ofrecerte opciones como reestructurar tu deuda, extender el plazo o establecer un plan de pagos más accesible. ¿Te gustaría saber más sobre las opciones disponibles?"
+        },
+
     };
 
     let currentState = "start";  
     let amountToRecargar = null; 
-
+    let loanAmount = 0;  // Monto del préstamo
+    let interestRate = 0; // Tasa de interés
+    let numberOfPayments = 0; // Número de pagos
 
     function handleConversation(userInput) {
         userInput = userInput.toLowerCase().trim();  
+
         const keywords = {
-            "Consulta de saldo": ["saldo", "disponible", "cuánto tengo"],
+            "Consulta de saldo": ["saldo", "disponible", "cuanto tengo"],
             "Últimos movimientos": ["movimientos", "transacciones", "historial", "recientes"],
-            "Recargar cuenta": ["recargar", "añadir dinero", "cargar", "depositar", "recargar mi cuenta" ,"recarga"],
-            "Bloquear tarjeta": ["bloquear", "suspender", "desactivar", "tarjeta"],
-            "Horarios de atención": ["horarios", "cuándo atienden", "horarios de servicio"],
-            "Salir": ["salir", "adiós", "cerrar sesión", "terminar"]
+            "Recargar cuenta": ["recargar", "anadir dinero", "cargar", "depositar", "recargar mi cuenta" ,"recarga"],
+            "Bloquear tarjeta": ["bloquear", "suspender", "desactivar"],
+            "Horarios de atención": ["horarios", "cuando atienden", "horarios de servicio"],
+            "¿Qué tipos de interés tendrá mi crédito?": ["interes", "tipos de interes", "credito interes", "tasa de interes", "intereses del credito" , "intereses"],
+            "¿Cuánto dinero me pueden prestar?": ["prestamo", "dinero prestado", "cuanto puedo pedir", "dinero que me pueden prestar","prestar"],
+            "Salir": ["salir", "adios", "cerrar sesion", "terminar"],
+            "¿Qué comisiones me cobrarán?": ["comisiones", "cobros", "tarifas", "costos de transaccion", "cuanto me cobran"],
+            "¿Dónde se encuentran ubicados los centros financieros del banco?": ["ubicacion", "centros financieros", "donde estan", "sucursales", "direccion del banco", "oficinas del banco", "ubican"],
+            "¿Cuál es la diferencia entre las cuentas de cheques y las de ahorros?": ["diferencia", "cheques", "cuentas de cheques", "cuentas de ahorros", "diferencia entre cuentas"],
+            "¿Qué tipos de cuentas ofrecen?": ["tipos de cuentas", "cuentas corrientes", "cuentas de ahorro", "cuentas a plazo fijo", "tipos de cuentas ofrecidas", "cuenta corriente","cuenta de ahorro"],
+            "¿Qué tipos de tarjetas ofrecen?": ["tipos de tarjetas", "tarjetas de debito", "tarjetas de credito", "tarjetas prepagadas", "tarjetas"],
+            "¿Cómo solicito una tarjeta?": ["como solicito una tarjeta", "solicitar tarjeta", "quiero una tarjeta", "tarjeta solicitud" , "quiero solicitar una tarjeta"],
+            "¿Cómo puedo comunicarme con el banco?": ["como contactar con el banco", "como comunicarme con el banco", "metodos de contacto", "contactar banco", "quiero comunicarme con el banco" , " como me puedo comunicar con el banco" ,"como puedo contactar al banco"],
+            "¿Cómo puedo calcular una cuota?": ["calcular cuota", "cálculo de cuota", "cómo calcular la cuota", "calcular cuota crédito", "cuota préstamo" , "Como puedo calcular una cuota"],
+            "¿Cuáles son los requisitos para solicitar un crédito?": ["requisitos credito", "como solicitar un credito", "requisitos para credito", "credito requisitos", "que necesito para solicitar un credito" , "cuales son los requisitos para solicitar un credito"],
+            "¿Qué pasa si no puedo pagar una cuota?": ["no puedo pagar cuota", "problema con pago cuota", "no pagué la cuota", "impago cuota", "qué pasa si no pago la cuota", "no puedo pagar el préstamo", "problema con pago de una cuota"]
         };
+
 
         for (const [state, words] of Object.entries(keywords)) {
             if (words.some(keyword => userInput.includes(keyword))) {
@@ -339,9 +395,241 @@
             }
         }
 
+        if (currentState === "¿Qué tipos de cuentas ofrecen?") {
+            currentState = "Elegir tipo de cuenta";
+            return " Responde con el tipo de cuenta que te gustaría saber más (corriente, ahorro, a plazo fijo)";
+        }
+
+        if (currentState === "Elegir tipo de cuenta") {
+            // Normalizamos la entrada del usuario
+            let userInputNormalized = userInput.trim().toLowerCase().replace(/[^\w\s]/g, ''); 
+
+            console.log("Estado actual:", currentState);
+            console.log("Entrada normalizada:", userInputNormalized);
+
+            // Dependiendo del tipo de cuenta elegido, mostramos una descripción
+            if (userInputNormalized === "corriente") {
+                currentState = "start"; // Reiniciar el flujo después de dar la respuesta
+                return "Una cuenta corriente te permite realizar transacciones frecuentes como depósitos, retiros y pagos de cheques. Ideal para quienes necesitan acceso fácil a su dinero. ¿Te gustaría hacer otra consulta?";
+            } 
+            else if (userInputNormalized === "ahorro") {
+                currentState = "start"; // Reiniciar el flujo después de dar la respuesta
+                return "Una cuenta de ahorro es perfecta para guardar tu dinero y ganar intereses sobre el saldo. Se utiliza para ahorrar de manera segura a largo plazo. ¿Te gustaría hacer otra consulta?";
+            }
+            else if (userInputNormalized === "plazo fijo") {
+                currentState = "start"; // Reiniciar el flujo después de dar la respuesta
+                return "Una cuenta a plazo fijo es ideal si buscas una inversión segura. Colocas tu dinero en la cuenta por un período específico a cambio de un interés garantizado. ¿Te gustaría hacer otra consulta?";
+            }
+            // Si no entendemos la entrada, pedimos al usuario que elija un tipo válido
+            else {
+                return "No entendí el tipo de cuenta que mencionaste. Por favor, elige entre 'corriente', 'ahorro', o 'plazo fijo'.";
+            }
+        }
+
+        if (currentState === "¿Qué tipos de tarjetas ofrecen?") {
+            currentState = "Elegir tipo de tarjeta";
+            return "Responde con el tipo de tarjeta que te gustaría saber más (débito, crédito, prepagada)";
+        }
+
+        if (currentState === "Elegir tipo de tarjeta") {
+            // Normalizamos la entrada del usuario
+            let userInputNormalized = userInput.trim().toLowerCase().replace(/[^\w\s]/g, ''); 
+
+            console.log("Estado actual:", currentState);
+            console.log("Entrada normalizada:", userInputNormalized);
+
+            // Dependiendo del tipo de tarjeta elegido, mostramos una descripción
+            if (userInputNormalized === "débito") {
+                currentState = "start"; // Reiniciar el flujo después de dar la respuesta
+                return "Las tarjetas de débito te permiten realizar pagos directamente desde tu cuenta bancaria. Ideal para quienes prefieren no endeudarse y tener control total sobre sus gastos. ¿Te gustaría hacer otra consulta?";
+            } 
+            else if (userInputNormalized === "crédito") {
+                currentState = "start"; // Reiniciar el flujo después de dar la respuesta
+                return "Las tarjetas de crédito te permiten realizar compras y pagarlas a plazos. Ideal para quienes necesitan flexibilidad y ventajas como puntos o beneficios adicionales. ¿Te gustaría hacer otra consulta?";
+            }
+            else if (userInputNormalized === "prepagada") {
+                currentState = "start"; // Reiniciar el flujo después de dar la respuesta
+                return "Las tarjetas prepagadas son ideales para quienes no desean vincular su cuenta bancaria. Puedes cargarlas con el monto que elijas y usarla como una tarjeta de débito. ¿Te gustaría hacer otra consulta?";
+            }
+            // Si no entendemos la entrada, pedimos al usuario que elija un tipo válido
+            else {
+                return "No entendí el tipo de tarjeta que mencionaste. Por favor, elige entre 'débito', 'crédito', o 'prepagada'.";
+            }
+        }
+
+        if (currentState === "¿Cómo solicito una tarjeta?") {
+            currentState = "Elegir tipo de tarjetas";
+            return "Elija la tarjeta que desea solicitar entre crédito, débito y prepagada.";
+        }
+
+        if (currentState === "Elegir tipo de tarjetas") {
+            // Normalizamos la entrada del usuario, convirtiendo todo a minúsculas y eliminando caracteres no alfabéticos.
+            let userInputNormalized = userInput.trim().toLowerCase().replace(/[^\w\s]/g, '');
+
+            console.log("Estado actual:", currentState);
+            console.log("Entrada normalizada:", userInputNormalized);
+
+            // Dependiendo del tipo de tarjeta elegido, mostramos el siguiente paso
+            if (userInputNormalized === "debito" || userInputNormalized === "débito") {
+                currentState = "start"; // Reiniciar el flujo después de dar la respuesta
+                return "Para solicitar una tarjeta de débito, solo necesitas tener una cuenta en el banco. ";
+            } 
+            else if (userInputNormalized === "credito" || userInputNormalized === "crédito") {
+                currentState = "start"; // Reiniciar el flujo después de dar la respuesta
+                return "Para solicitar una tarjeta de crédito, necesitamos verificar tu historial crediticio. ¿Te gustaría hacer otra consulta? ";
+            }
+            else if (userInputNormalized === "prepagada") {
+                currentState = "start"; // Reiniciar el flujo después de dar la respuesta
+                return "Las tarjetas prepagadas pueden ser solicitadas en cualquier oficina del banco o a través de la aplicación. ¿Te gustaría hacer otra consulta? ";
+            }
+            // Si no entendemos la entrada, pedimos al usuario que elija un tipo válido
+            else {
+                return "No entendí el tipo de tarjeta que mencionaste. Por favor, elige entre 'débito', 'crédito', o 'prepagada'. ¿Te gustaría hacer otra consulta? ";
+            }
+        }
+
+        if (currentState === "¿Cómo puedo comunicarme con el banco?") {
+            currentState = "Elegir método de comunicación";
+            return "¿Qué método te gustaría utilizar?";
+        }
+
+        if (currentState === "Elegir método de comunicación") {
+            // Normalizamos la entrada del usuario
+            let userInputNormalized = userInput.trim().toLowerCase().replace(/[^\w\s]/g, ''); 
+
+            console.log("Estado actual:", currentState);
+            console.log("Entrada normalizada:", userInputNormalized);
+
+            // Dependiendo del método elegido, mostramos más detalles
+            if (userInputNormalized.includes("telefono") || userInputNormalized.includes("llamar")) {
+                currentState = "start"; // Reiniciar el flujo después de dar la respuesta
+                return "Puedes llamarnos al número de atención al cliente: 800-123-4567. Nuestro horario de atención es de lunes a viernes, de 9 AM a 6 PM. ¿Te gustaría hacer otra consulta?";
+            } 
+            else if (userInputNormalized.includes("correo") || userInputNormalized.includes("email")) {
+                currentState = "start"; // Reiniciar el flujo después de dar la respuesta
+                return "También puedes enviarnos un correo electrónico a soporte@banco.com. Te responderemos en un plazo de 24 a 48 horas. ¿Te gustaría hacer otra consulta?";
+            }
+            else if (userInputNormalized.includes("sucursal") || userInputNormalized.includes("oficina")) {
+                currentState = "start"; // Reiniciar el flujo después de dar la respuesta
+                return "Si prefieres venir en persona, puedes visitarnos en cualquiera de nuestras sucursales. Consulta nuestra página web para encontrar la más cercana a tu ubicación. ¿Te gustaría hacer otra consulta?";
+            }
+            // Si no entendemos la entrada, pedimos al usuario que elija un método válido
+            else {
+                return "No entendí el método de contacto que mencionaste. Por favor, elige entre 'teléfono', 'correo electrónico', o 'sucursal'.";
+            }
+        }
+
+        if (currentState === "¿Cuáles son los requisitos para solicitar un crédito?") {
+            currentState = "Explicar requisitos crédito";
+        }
+
+        if (currentState === "Explicar requisitos crédito") {
+            
+            let userInputNormalized = userInput.trim().toLowerCase().replace(/[^\w\s]/g, ''); 
+
+            console.log("Estado actual:", currentState);
+            console.log("Entrada normalizada:", userInputNormalized);
+
+            
+            if (userInputNormalized.includes("si") || userInputNormalized === "quiero saber" || userInputNormalized === "sí") {
+                currentState = "start"; // Reiniciar el flujo después de dar la respuesta
+                return "Los requisitos generales para solicitar un crédito son los siguientes:\n" +
+                    "1. Ser mayor de 18 años.\n" +
+                    "2. Tener un documento de identidad válido.\n" +
+                    "3. Tener un historial crediticio positivo o aceptable. (dependiendo del tipo de crédito)\n" +
+                    "4. Tener una fuente de ingresos estable y verificable.\n" +
+                    "5. Dependiendo del tipo de crédito, puede ser necesario presentar garantías o cofirmantes,\n" +
+                    "\n¿Te gustaría saber más sobre algún aspecto en particular de los requisitos?";
+            } 
+            // Si el usuario no muestra interés o no entiende la respuesta, pedimos más detalles
+            else {
+                return "No entendí muy bien tu respuesta. Si quieres saber más sobre los requisitos para solicitar un crédito, solo responde 'sí' o 'quiero saber'.";
+            }
+        }
+
+        if (currentState === "¿Cómo puedo calcular una cuota?") {
+            currentState = "Pedir monto del préstamo";
+            return "Para calcular la cuota, necesito saber el monto del préstamo. ¿Cuál es el monto que deseas pedir?";
+        }
+
+        if (currentState === "Pedir monto del préstamo") {
+            // Se espera que el usuario ingrese el monto
+            loanAmount = parseFloat(userInput);  // Guardamos el monto
+            currentState = "Pedir tasa de interés";
+            return "¿Cuál es la tasa de interés anual (en porcentaje) para el préstamo?";
+        }
+
+        if (currentState === "Pedir tasa de interés") {
+            // Se espera que el usuario ingrese la tasa de interés
+            interestRate = parseFloat(userInput) / 100;  // Convertimos el porcentaje en decimal
+            currentState = "Pedir plazo del préstamo";
+            return "¿En cuántos meses deseas pagar el préstamo? (Por ejemplo, 12 meses, 24 meses, etc.)";
+        }
+
+        if (currentState === "Pedir plazo del préstamo") {
+            // Se espera que el usuario ingrese el número de meses
+            numberOfPayments = parseInt(userInput);  // Guardamos el número de pagos
+            currentState = "Calcular cuota";
+            return "Estoy calculando la cuota para el préstamo. Un momento...";
+        }
+
+        if (currentState === "Calcular cuota") {
+            // Realizamos el cálculo de la cuota
+            let monthlyInterestRate = interestRate / 12;  // Convertimos la tasa anual a mensual
+            let monthlyPayment = loanAmount * (monthlyInterestRate * Math.pow(1 + monthlyInterestRate, numberOfPayments)) / (Math.pow(1 + monthlyInterestRate, numberOfPayments) - 1);
+            currentState = "start";  // Reiniciar el flujo
+
+            return `Tu cuota mensual para un préstamo de $${loanAmount} con una tasa de interés anual del ${interestRate * 100}% y un plazo de ${numberOfPayments} meses es de $${monthlyPayment.toFixed(2)}. ¿Te gustaría hacer mas preguntas o quieres aclarar otra duda?`;
+        }
+
+        if (currentState === "¿Qué pasa si no puedo pagar una cuota?") {
+            // Normalizamos la entrada del usuario
+            let userInputNormalized = userInput.trim().toLowerCase().replace(/[^\w\s]/g, ''); 
+
+            console.log("Estado actual:", currentState);
+            console.log("Entrada normalizada:", userInputNormalized);
+
+            // Dependiendo de la respuesta del usuario, mostramos la información sobre opciones o consecuencias
+            if (userInputNormalized === "si" || userInputNormalized === "quiero saber" || userInputNormalized === "sí") {
+                currentState = "Explicar consecuencias impago cuota"; // Reiniciar el flujo después de dar la respuesta
+                return " Dependiendo del tipo de crédito, el banco podría ofrecerte opciones como reestructurar tu deuda, extender el plazo o establecer un plan de pagos más accesible. ¿Te gustaría saber más sobre cómo solicitar una reestructuración de deuda o ver las opciones disponibles?";
+            } 
+            else if (userInputNormalized === "no" || userInputNormalized === "no quiero saber") {
+                currentState = "Explicar consecuencias impago cuota"; // Reiniciar el flujo después de dar la respuesta
+                return "Entendido. Si en algún momento necesitas más información, no dudes en preguntarnos. ¿Te gustaría saber algo más sobre otros temas o servicios?";
+            } 
+            else {
+                return "No entendí muy bien tu respuesta. Si quieres saber más sobre lo que pasa si no puedes pagar una cuota, responde 'sí' o 'quiero saber'.";
+            }
+        }
+
+        if (currentState === "Explicar consecuencias impago cuota") {
+            // Normalizamos la entrada del usuario
+            let userInputNormalized = userInput.trim().toLowerCase().replace(/[^\w\s]/g, ''); 
+
+            console.log("Estado actual:", currentState);
+            console.log("Entrada normalizada:", userInputNormalized);
+
+            // Dependiendo de la respuesta del usuario, mostramos las consecuencias del impago
+            if (userInputNormalized === "si" || userInputNormalized === "quiero saber" || userInputNormalized === "sí") {
+                currentState = "start"; // Reiniciar el flujo después de dar la respuesta
+                return "El impago de una cuota puede traer consecuencias como:\n" +
+                    "1. **Cobro de intereses moratorios.**\n" +
+                    "2. **Afectación en tu historial crediticio.**\n" +
+                    "3. **Ejecutar garantías o cofirmantes.**\n" +
+                    "\nLo mejor es siempre tratar de comunicarte con el banco para evitar estos problemas. ¿Te gustaría saber algo más sobre otros temas o servicios?";
+            } 
+            else if (userInputNormalized === "no" || userInputNormalized === "no quiero saber") {
+                currentState = "start"; // Reiniciar el flujo después de dar la respuesta
+                return "Entendido. Si en algún momento necesitas más información, no dudes en preguntarnos. ¿Te gustaría saber algo más sobre otros temas o servicios?";
+            }
+            else {
+                return "No entendí muy bien tu respuesta. Si quieres saber más sobre las consecuencias de no pagar una cuota, responde 'sí' o 'quiero saber'.";
+            }
+        }
+
         return conversationFlow["default"].message;
     }
-
 
     async function sendMessage() {
         const userInput = document.getElementById('userInput').value;
